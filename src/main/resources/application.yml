@@ -24,5 +24,7 @@ spring:
       cachePrepStmts: true  # 开启二级缓存
 mybatis:
    configLocation: classpath:mybatis-config.xml
-   typeAliasesPackage: com.newperson.springbootredis.domain
-   mapperLocations: classpath:mapper/*.xml
+   typeAliasesPackage: com.qilu.po
+   mapperLocations: classpath:mapper/*.xmler
+pagehelper:
+   helper-dialect: mysql

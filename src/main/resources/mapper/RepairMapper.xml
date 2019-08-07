@@ -16,5 +16,17 @@
         <result column="repairStatus" property="repairStatus"></result>
         <result column="serviceStatus" property="serviceStatus"></result>
         <result column="fine" property="fine"></result>
+        <association property="maintainer" resultMap="MaintainerMap"></association>
     </resultMap>
+    <resultMap id="MaintainerMap" type="Maintainer">
+        <id column="mid" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="sex" property="sex"></result>
+        <result column="phone" property="phone"></result>
+        <result column="mainNo" property="mainNo"></result>
+    </resultMap>
+
+    <select id="findMyRepair" resultMap="repairMap">
+        select r.*,m.* from t_repair r,t_receipt rt,t_maintainer m where r.role=#{roleType} and r.user_id=#{userId} and r.id=rt.repair_id and rt.maintainer_id=m.id;
+    </select>
 </mapper>
