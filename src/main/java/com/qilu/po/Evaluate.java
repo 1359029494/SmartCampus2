@@ -16,6 +16,8 @@ public class Evaluate implements Serializable {
     private Integer id;
     private Integer role;//角色
     private Integer userId;//角色id
+    private Integer maintainerId;
+    private String maintainerName;
     private String content;//评价内容
     private Integer star;//星级
     //学生实体类

@@ -8,6 +8,8 @@
         <result column="role" property="role"></result>
         <result column="userId" property="userId"></result>
         <result column="content" property="content"></result>
+        <result column="maintainerId" property="maintainerId"></result>
+        <result column="maintainerName" property="maintainerName"></result>
         <result column="star" property="star"></result>
     </resultMap>
 </mapper>
