@@ -1,5 +1,6 @@
 package com.qilu.po;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,9 @@ public class Teacher implements Serializable {
     private String photo;//头像
 
     //老师保修过得
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Repair> repairs;
     //老师评价过得
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Evaluate> evaluates;
 }
