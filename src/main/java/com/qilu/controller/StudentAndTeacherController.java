@@ -2,7 +2,7 @@ package com.qilu.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qilu.Service.StudentAndTeacherService;
+import com.qilu.service.StudentAndTeacherService;
 import com.qilu.po.Repair;
 import com.qilu.utils.JsonData;
 import org.springframework.web.bind.annotation.*;

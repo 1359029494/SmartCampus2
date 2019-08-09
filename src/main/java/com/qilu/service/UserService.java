@@ -1,7 +1,7 @@
 package com.qilu.service;
 
 import com.qilu.dto.UserDTO;
-import com.qilu.po.User;
+import com.qilu.po.*;
 import com.qilu.utils.ResponseBean;
 
 
@@ -15,4 +15,5 @@ public interface UserService {
     ResponseBean messageSendCodeService(String phone, User user) throws Exception;
     //检验验证码
     void checkPhoneCodeService(String code,String password ,User user)throws Exception;
+
 }

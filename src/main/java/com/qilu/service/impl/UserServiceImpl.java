@@ -1,23 +1,15 @@
 package com.qilu.service.impl;
 
-import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
 import com.qilu.dto.UserDTO;
 import com.qilu.exception.CustomException;
-import com.qilu.mapper.MaintainerMapper;
-import com.qilu.mapper.StudentMapper;
-import com.qilu.mapper.TeacherMapper;
-import com.qilu.mapper.UserMapper;
-import com.qilu.po.Maintainer;
-import com.qilu.po.Student;
-import com.qilu.po.Teacher;
-import com.qilu.po.User;
+import com.qilu.mapper.*;
+import com.qilu.po.*;
 import com.qilu.service.UserService;
 import com.qilu.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.util.Objects;
 
@@ -35,6 +27,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MaintainerMapper maintainerMapper;
+
+    @Autowired
+    private RepairMapper repairMapper;
+
+    @Autowired
+    private EvaluateMapper evaluateMapper;
 
     @Autowired
     private Gson gson;
@@ -110,4 +108,6 @@ public class UserServiceImpl implements UserService {
         }
         userMapper.modifyPasswordByUsername(user.getUsername(), password);
     }
+
+
 }

@@ -1,6 +1,6 @@
-package com.qilu.Service.impl;
+package com.qilu.service.impl;
 
-import com.qilu.Service.StudentAndTeacherService;
+import com.qilu.service.StudentAndTeacherService;
 import com.qilu.mapper.*;
 import com.qilu.po.*;
 import org.apache.commons.io.FileUtils;

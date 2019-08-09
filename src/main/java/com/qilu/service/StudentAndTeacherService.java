@@ -1,4 +1,4 @@
-package com.qilu.Service;
+package com.qilu.service;
 
 import com.qilu.po.Evaluate;
 import com.qilu.po.Repair;

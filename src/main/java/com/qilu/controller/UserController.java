@@ -1,9 +1,8 @@
 package com.qilu.controller;
 
-import com.google.gson.Gson;
 import com.qilu.dto.UserDTO;
 import com.qilu.po.User;
-import com.qilu.Service.UserService;
+import com.qilu.service.UserService;
 import com.qilu.utils.JsonData;
 import com.qilu.utils.ResponseBean;
 import org.apache.ibatis.annotations.Param;
