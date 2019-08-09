@@ -27,6 +27,6 @@
     </resultMap>
 
     <select id="findMyRepair" resultMap="repairMap">
-        select r.*,m.* from t_repair r,t_receipt rt,t_maintainer m where r.role=#{roleType} and r.user_id=#{userId} and r.id=rt.repair_id and rt.maintainer_id=m.id;
+        select r.*,m.* from t_repair r LEFT JOIN t_receipt rt ON r.id=rt.repair_id LEFT JOIN t_maintainer m  ON rt.maintainer_id=m.id WHERE r.role=#{roleType} AND r.user_id=#{userId}
     </select>
 </mapper>

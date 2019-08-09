@@ -25,6 +25,6 @@ spring:
 mybatis:
    configLocation: classpath:mybatis-config.xml
    typeAliasesPackage: com.qilu.po
-   mapperLocations: classpath:mapper/*.xmler
+   mapperLocations: classpath:mapper/*.xml
 pagehelper:
    helper-dialect: mysql

@@ -2,6 +2,7 @@ package com.qilu.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qilu.po.User;
 import com.qilu.service.StudentAndTeacherService;
 import com.qilu.po.Repair;
 import com.qilu.utils.JsonData;
@@ -27,11 +28,14 @@ public class StudentAndTeacherController {
      */
 
     @GetMapping("findProgress")
-    public JsonData findProgress(HttpSession session, @RequestParam(defaultValue = "1") int pageNum){
+    public PageInfo<Repair> findProgress(HttpSession session, @RequestParam(defaultValue = "1") int pageNum){
+        System.out.println(pageNum);
         PageHelper.startPage(pageNum, 2);
         List<Repair> list = stuService.findProgress(session);
+        System.out.println(list.size());
         PageInfo<Repair> pageInfo = new PageInfo<>(list);
-        return JsonData.buildSuccess(pageInfo);
+        System.out.println(pageInfo);
+        return pageInfo;
     }
 
     /**
@@ -81,26 +85,24 @@ public class StudentAndTeacherController {
     }
 
     /**
-     * 功能描述:学生查看自己的信息
+     * 功能描述:师生查看自己的信息
      * @param:
      * @return:
      * @auther: 治毅
      * @date:
      */
-    @GetMapping("findMyInfo4Student")
+    @GetMapping("findMyInfo4StudentAndTeacher")
     public JsonData findMyInfo4Student(HttpSession session){
-        return JsonData.buildSuccess(stuService.findMyInfo4Student(session));
-    }
-
-    /**
-     * 功能描述:学生查看自己的信息
-     * @param:
-     * @return:
-     * @auther: 治毅
-     * @date:
-     */
-    @GetMapping("findMyInfo4Teacher")
-    public JsonData findMyInfo4Teacher(HttpSession session){
-        return JsonData.buildSuccess(stuService.findMyInfo4Teacher(session));
+        User user = (User) session.getAttribute("user");
+        System.out.println(user);
+        JsonData success = null;
+        if (user.getRole() == 1){
+            success = JsonData.buildSuccess(stuService.findMyInfo4Student(session));
+            System.out.println(success);
+        }
+        if (user.getRole() == 2){
+            success = JsonData.buildSuccess(stuService.findMyInfo4Teacher(session));
+        }
+        return success;
     }
 }
