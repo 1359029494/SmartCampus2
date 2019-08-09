@@ -2,7 +2,7 @@ package com.qilu.controller;
 
 import com.qilu.dto.UserDTO;
 import com.qilu.po.User;
-import com.qilu.service.UserService;
+import com.qilu.Service.UserService;
 import com.qilu.utils.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
