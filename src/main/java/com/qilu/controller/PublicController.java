@@ -21,7 +21,7 @@ public class PublicController {
     private UserService userService;
 
     @PostMapping("login")
-    public JsonData login(@RequestBody UserDTO userDTO, HttpServletRequest request) throws Exception {
+    public JsonData login(UserDTO userDTO, HttpServletRequest request) throws Exception {
         User user = userService.LoginService(userDTO);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
