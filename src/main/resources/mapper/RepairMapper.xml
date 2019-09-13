@@ -6,27 +6,28 @@
     <resultMap id="repairMap" type="Repair">
         <id column="id" property="id"></id>
         <result column="role" property="role"></result>
-        <result column="userId" property="userid"></result>
+        <result column="user_id" property="userId"></result>
         <result column="type" property="type"></result>
         <result column="local" property="local"></result>
         <result column="photo" property="photo"></result>
         <result column="evaluateId" property="evaluateId"></result>
-        <result column="repairDate" property="repairDate"></result>
-        <result column="serviceDate" property="serviceDate"></result>
-        <result column="repairStatus" property="repairStatus"></result>
-        <result column="serviceStatus" property="serviceStatus"></result>
+        <result column="repair_date" property="repairDate"></result>
+        <result column="service_date" property="serviceDate"></result>
+        <result column="repair_status" property="repairStatus"></result>
+        <result column="service_status" property="serviceStatus"></result>
         <result column="fine" property="fine"></result>
+        <result column="remarks" property="remarks"></result>
         <association property="maintainer" resultMap="MaintainerMap"></association>
     </resultMap>
     <resultMap id="MaintainerMap" type="Maintainer">
         <id column="mid" property="id"></id>
         <result column="name" property="name"></result>
         <result column="sex" property="sex"></result>
-        <result column="phone" property="phone"></result>
-        <result column="mainNo" property="mainNo"></result>
+        <result column="mphone" property="phone"></result>
+        <result column="mai_no" property="maiNo"></result>
     </resultMap>
 
     <select id="findMyRepair" resultMap="repairMap">
-        select r.*,m.* from t_repair r LEFT JOIN t_receipt rt ON r.id=rt.repair_id LEFT JOIN t_maintainer m  ON rt.maintainer_id=m.id WHERE r.role=#{roleType} AND r.user_id=#{userId}
+        select r.*,m.*,m.phone mphone from t_repair r LEFT JOIN t_receipt rt ON r.id=rt.repair_id LEFT JOIN t_maintainer m  ON rt.maintainer_id=m.id WHERE r.role=#{roleType} AND r.user_id=#{userId}
     </select>
 </mapper>

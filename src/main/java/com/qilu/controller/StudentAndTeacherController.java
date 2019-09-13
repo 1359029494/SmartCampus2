@@ -2,6 +2,8 @@ package com.qilu.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qilu.mapper.RepairMapper;
+import com.qilu.po.Knowledge;
 import com.qilu.po.User;
 import com.qilu.service.StudentAndTeacherService;
 import com.qilu.po.Repair;
@@ -18,6 +20,8 @@ import java.util.List;
 public class StudentAndTeacherController {
     @Resource
     private StudentAndTeacherService stuService;
+    @Resource
+    private RepairMapper repairMapper;
 
     /**
      * 功能描述:查询保修进度
@@ -28,15 +32,12 @@ public class StudentAndTeacherController {
      */
 
     @GetMapping("findProgress")
-    public PageInfo<Repair> findProgress(HttpSession session, @RequestParam(defaultValue = "1") int pageNum){
-        System.out.println(pageNum);
-        PageHelper.startPage(pageNum, 2);
+    public JsonData findProgress(HttpSession session){
+        User user = (User) session.getAttribute("user");
         List<Repair> list = stuService.findProgress(session);
-        System.out.println(list.size());
-        PageInfo<Repair> pageInfo = new PageInfo<>(list);
-        System.out.println(pageInfo);
-        return pageInfo;
+        return JsonData.buildSuccess(list);
     }
+
 
     /**
      * 功能描述:通过id查询评价
@@ -104,5 +105,32 @@ public class StudentAndTeacherController {
             success = JsonData.buildSuccess(stuService.findMyInfo4Teacher(session));
         }
         return success;
+    }
+
+    /**
+     * 功能描述:查看校园安全小知识
+     * @param:
+     * @return:
+     * @auther: 治毅
+     * @date:
+     */
+    @GetMapping("findAllKnowledge")
+    public JsonData findAllKnowledge(@RequestParam(defaultValue = "1") int pageNum){
+        PageHelper.startPage(pageNum, 2);
+        List<Knowledge> list = stuService.findAllKnowledge();
+        PageInfo<Knowledge> pageInfo = new PageInfo<>(list);
+        return JsonData.buildSuccess(pageInfo);
+    }
+
+    /**
+     * 功能描述:查看校园安全小知识通过id
+     * @param:
+     * @return:
+     * @auther: 治毅
+     * @date:
+     */
+    @GetMapping("findOneKnowledgeByid")
+    public JsonData findOneKnowledgeByid(int id){
+        return JsonData.buildSuccess(stuService.findOneKnowledgeByid(id), 1);
     }
 }
