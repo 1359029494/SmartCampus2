@@ -6,10 +6,7 @@ import com.qilu.po.Order;
 import com.qilu.po.Repair;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
-<<<<<<< HEAD
 import org.apache.ibatis.annotations.Update;
-=======
->>>>>>> 师生评论业务提交
 
 import java.util.List;
 
@@ -31,7 +28,6 @@ public interface RepairMapper {
      */
     @Insert("insert into t_repair values(default,#{role},#{userId},#{type},#{local},#{photo},null,#{repairDate},null,0,0,0)")
     public int insRepairSchool(Repair r);
-<<<<<<< HEAD
 
     /**
      * 功能描述:维修人查看评价
@@ -125,8 +121,6 @@ public interface RepairMapper {
      */
     @Insert("insert into s_order (orderNo,repair_id,money,order_date) values (#{orderNo},#{repairId},#{money},#{orderDate})")
     public int insertFineOrder(Order order);
-}
-=======
     
     /**
      * 功能描述:通过主键id查询报修信息
@@ -138,4 +132,3 @@ public interface RepairMapper {
     @Select("select * from t_repair where id=#{id}")
     public Repair findRepairById(int id);
 }
->>>>>>> 师生评论业务提交
