@@ -110,19 +110,19 @@
 
 		<script>
 			layui.config({
-				base: 'js/module/'
+				base: '../static/js/module/'
 			}).extend({
-				dialog: 'dialog',
-				load: 'load',
-				common: 'common'
+                // dialog: 'dialog',
+                load: 'load',
+				common: '../common'
 			});
-			layui.use(['form', 'jquery', 'layer', 'dialog', 'common', 'element'], function() {
+			layui.use(['form', 'jquery', 'layer', 'common', 'element'], function() {
 				var form = layui.form(),
 					layer = layui.layer,
 					$ = layui.jquery,
 					common = layui.common,
-					element = layui.element(),
-					dialog = layui.dialog;
+					element = layui.element();
+					// dialog = layui.dialog;
 
 				//获取当前iframe的name值
 				var iframeObj = $(window.frameElement).attr('name');

@@ -117,23 +117,23 @@
 				listOrderAll: '/admin/category/listorderall.html'
 			}
 		</script>
-		<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 
 		<script>
 			layui.config({
-				base: '../../static/admin/js/module/'
+				base: '../static/js/module/'
 			}).extend({
-				dialog: 'dialog',
+				// dialog: 'dialog',
 				load: 'load',
-				common: 'common'
+				common: '../common'
 			});
-			layui.use(['form', 'jquery', 'layer', 'dialog', 'common', 'element'], function() {
+			layui.use(['form', 'jquery', 'layer', /*'dialog',*/ 'common', 'element'], function() {
 				var form = layui.form(),
 					layer = layui.layer,
 					$ = layui.jquery,
+                    // dialog = layui.dialog,
 					common = layui.common,
-					element = layui.element(),
-					dialog = layui.dialog;
+					element = layui.element();
 
 				//获取当前iframe的name值
 				var iframeObj = $(window.frameElement).attr('name');
