@@ -27,6 +27,7 @@ public class Repair  implements Serializable {
     private Date serviceDate;//维修时间
     private Integer repairStatus;//是否有人接单 0未接单 1已接单
     private Integer serviceStatus;//是否维修完毕 0未  1已
+    private Integer payStatus;//是否交了罚款 0未  1已
     private Integer fine;//是否罚钱 0罚钱  1不罚钱
     private String remarks;//备注
     //一对多，一个保修可以有多个评论

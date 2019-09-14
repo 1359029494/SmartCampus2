@@ -48,6 +48,7 @@ public class StudentAndTeacherController {
      */
     @GetMapping("findEvaluateById")
     public JsonData findEvaluateById(int id){
+        System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhh");
         return JsonData.buildSuccess(stuService.findOneEvaByid4Student(id));
     }
 
@@ -59,8 +60,8 @@ public class StudentAndTeacherController {
      * @date:
      */
     @PostMapping("insEvaluate")
-    public JsonData insEvaluate(HttpSession session, String content, int star){
-        int flag = stuService.insEvaluate(session, content, star);
+    public JsonData insEvaluate(HttpSession session, String name, String content, int star){
+        int flag = stuService.insEvaluate(session, name, content, star);
         if (flag > 0){
             return JsonData.buildSuccess("评价成功");
         }else {
@@ -132,5 +133,17 @@ public class StudentAndTeacherController {
     @GetMapping("findOneKnowledgeByid")
     public JsonData findOneKnowledgeByid(int id){
         return JsonData.buildSuccess(stuService.findOneKnowledgeByid(id), 1);
+    }
+    
+    /**
+     * 功能描述:查询是否对该订单评论过
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    @GetMapping("isHasEvaluate")
+    public JsonData isHasEvaluate(int id){
+        return JsonData.buildSuccess(stuService.findRepairById(id));
     }
 }
