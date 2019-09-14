@@ -15,6 +15,7 @@
         <result column="serviceDate" property="serviceDate"></result>
         <result column="repairStatus" property="repairStatus"></result>
         <result column="serviceStatus" property="serviceStatus"></result>
+        <result column="payStatus" property="payStatus"></result>
         <result column="fine" property="fine"></result>
         <association property="maintainer" resultMap="MaintainerMap"></association>
     </resultMap>

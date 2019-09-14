@@ -2,6 +2,7 @@ package com.qilu.mapper;
 
 import com.qilu.po.Evaluate;
 import com.qilu.po.Maintainer;
+import com.qilu.po.Order;
 import com.qilu.po.Repair;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
@@ -64,6 +65,26 @@ public interface RepairMapper {
      */
     @Select("select * from t_repair t left join s_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} ")
     public List<Repair> findMyOrder(int maintainer_id);
+
+    /**
+     * 功能描述:维修人查看待修的订单
+     * @param:
+     * @return:
+     * @auther: xy
+     * @date:
+     */
+    @Select("select * from t_repair t left join s_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} AND service_status=0")
+    public List<Repair> findMyOrderWithNo(int maintainer_id);
+
+    /**
+     * 功能描述:维修人查看完工的订单
+     * @param:
+     * @return:
+     * @auther: xy
+     * @date:
+     */
+    @Select("select * from t_repair t left join s_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} AND service_status=1 ")
+    public List<Repair> findMyOrderWithYes(int maintainer_id);
     /**
      * 功能描述:罚钱
      * @param:
@@ -80,7 +101,7 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Update("update t_repair set service_status=1 where id=#{id}")
+    @Update("update t_repair set service_status=1,service_date=NOW()  where id=#{id}")
     public int finish(int id);
     /**
      * 功能描述:接单
@@ -91,4 +112,13 @@ public interface RepairMapper {
      */
     @Insert("update t_repair set repair_status=1  where id=#{id}")
     public int receipt(int id);
+    /**
+     * 功能描述:新建罚款单
+     * @param:
+     * @return:
+     * @auther: xy
+     * @date:
+     */
+    @Insert("insert into s_order (orderNo,repair_id,money,order_date) values (#{orderNo},#{repairId},#{money},#{orderDate})")
+    public int insertFineOrder(Order order);
 }

@@ -3,6 +3,7 @@ package com.qilu.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qilu.po.Maintainer;
+import com.qilu.po.Order;
 import com.qilu.po.User;
 import com.qilu.service.RepairService;
 import com.qilu.service.StudentAndTeacherService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -21,22 +23,43 @@ import java.util.List;
 public class RepairController {
     @Resource
     private RepairService repairService;
-    //查看我得个人信息
-    @PostMapping("findMyOrder")
+    //查看维修人员个人信息
+    @PostMapping("findMyInfo")
     public JsonData findMyInfo(@Param("id")int id){
         Maintainer maintainer=repairService.findMyInfo(id);
         return JsonData.buildSuccess(maintainer);
     }
-    //查看我得接单
+    //查看我的接单
     @PostMapping("findMyOrder")
-    public PageInfo<Repair> findMyOrder(@Param("id")int id, @RequestParam(defaultValue = "1") int pageNum){
+    public PageInfo<Repair> findMyOrder(@Param("maintainer")int maintainer, @RequestParam(defaultValue = "1") int pageNum){
         System.out.println(pageNum);
         PageHelper.startPage(pageNum, 2);
-        System.out.println(id);
-        List<Repair> list = repairService.findMyOrder(id);
+        System.out.println(maintainer);
+        List<Repair> list = repairService.findMyOrder(maintainer);
         System.out.println(list.size());
         PageInfo<Repair> pageInfo = new PageInfo<>(list);
         System.out.println(pageInfo);
+        return pageInfo;
+    }
+    //查看我的未修订单
+    @PostMapping("findMyOrderWithNo")
+    public PageInfo<Repair> findMyOrderWithNo(@Param("maintainer")int maintainer, @RequestParam(defaultValue = "1") int pageNum){
+        System.out.println(pageNum);
+        PageHelper.startPage(pageNum, 3);
+        List<Repair> list = repairService.findMyOrderWithNo(maintainer);
+        PageInfo<Repair> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+    }
+    //查看我的已完工订单
+    @PostMapping("findMyOrderWithYes")
+    public PageInfo<Repair> findMyOrderWithYes(@Param("maintainer")int maintainer, @RequestParam(defaultValue = "1") int pageNum){
+        System.out.println(pageNum);
+        PageHelper.startPage(pageNum, 3);
+
+        List<Repair> list = repairService.findMyOrderWithYes(maintainer);
+
+        PageInfo<Repair> pageInfo = new PageInfo<>(list);
+
         return pageInfo;
     }
     //查看所有单子
@@ -54,6 +77,20 @@ public class RepairController {
     @PutMapping("fine")
     public JsonData fine(int id){
         repairService.fine(id);
+        return JsonData.buildSuccess();
+    }
+    //新建罚款单
+    @PutMapping("insertFineOrder")
+    public JsonData insertFineOrder(@Param("maintainer")int repairId,@Param("money") BigDecimal money){
+        int r1=(int)(Math.random()*(10));//产生2个0-9的随机数
+        int r2=(int)(Math.random()*(10));
+        long now = System.currentTimeMillis();//一个13位的时间戳
+        String orderNo =String.valueOf(r1)+String.valueOf(r2)+String.valueOf(now);
+        Order order=new Order();
+        order.setOrderNo(orderNo);
+        order.setMoney(money);
+        order.setRepairId(repairId);
+        repairService.insertFineOrder(order);
         return JsonData.buildSuccess();
     }
     //完工
