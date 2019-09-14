@@ -1,9 +1,6 @@
 package com.qilu.service;
 
-import com.qilu.po.Evaluate;
-import com.qilu.po.Repair;
-import com.qilu.po.Student;
-import com.qilu.po.Teacher;
+import com.qilu.po.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -63,4 +60,23 @@ public interface StudentAndTeacherService {
      * @date:
      */
     public int insEvaluate(HttpSession session, String content, int star);
+
+    /**
+     * 功能描述:校园安全小知识
+     * @param:
+     * @return:
+     * @auther: 治毅
+     * @date:
+     */
+    public List<Knowledge> findAllKnowledge();
+
+    /**
+     * 功能描述:根据id查询校园安全小知识的文章
+     * @param:
+     * @return:
+     * @auther: 治毅
+     * @date:
+     */
+
+    public Knowledge findOneKnowledgeByid(int id);
 }

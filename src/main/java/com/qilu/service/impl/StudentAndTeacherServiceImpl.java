@@ -1,5 +1,6 @@
 package com.qilu.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.qilu.service.StudentAndTeacherService;
 import com.qilu.mapper.*;
 import com.qilu.po.*;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -33,6 +35,9 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
 
     @Autowired
     private EvaluateMapper evaluateMapper;
+
+    @Resource
+    private KnowledgeMapper knowledgeMapper;
 
     public List<Repair> findProgress(HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -129,5 +134,15 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
         evaluate.setContent(content);
         evaluate.setStar(star);
         return evaluateMapper.insEvaluate(evaluate);
+    }
+
+    @Override
+    public List<Knowledge> findAllKnowledge() {
+        return knowledgeMapper.findAll();
+    }
+
+    @Override
+    public Knowledge findOneKnowledgeByid(int id) {
+        return knowledgeMapper.findByid(id);
     }
 }
