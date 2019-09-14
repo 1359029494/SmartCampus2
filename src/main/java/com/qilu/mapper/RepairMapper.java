@@ -121,4 +121,14 @@ public interface RepairMapper {
      */
     @Insert("insert into s_order (orderNo,repair_id,money,order_date) values (#{orderNo},#{repairId},#{money},#{orderDate})")
     public int insertFineOrder(Order order);
+    
+    /**
+     * 功能描述:通过主键id查询报修信息
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    @Select("select * from t_repair where id=#{id}")
+    public Repair findRepairById(int id);
 }
