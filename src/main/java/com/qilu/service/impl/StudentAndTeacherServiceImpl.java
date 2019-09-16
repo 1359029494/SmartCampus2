@@ -131,6 +131,7 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
             evaluate.setRole(2);
             evaluate.setUserId(user.getTeacher().getId());
         }
+        evaluate.setMaintainerName(name);
         evaluate.setContent(content);
         evaluate.setStar(star);
         return evaluateMapper.insEvaluate(evaluate);

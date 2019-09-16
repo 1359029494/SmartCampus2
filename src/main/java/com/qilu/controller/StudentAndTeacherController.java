@@ -147,8 +147,8 @@ public class StudentAndTeacherController {
      * @date:
      */
     @PostMapping("insEvaluate")
-    public JsonData insEvaluate(HttpSession session, String content, int star){
-        int flag = stuService.insEvaluate(session, content, star);
+    public JsonData insEvaluate(HttpSession session, String name, String content, int star){
+        int flag = stuService.insEvaluate(session, name, content, star);
         if (flag > 0){
             return JsonData.buildSuccess("评价成功");
         }else {
