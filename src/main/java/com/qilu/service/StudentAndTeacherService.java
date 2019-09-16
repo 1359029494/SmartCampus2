@@ -88,4 +88,10 @@ public interface StudentAndTeacherService {
      * @date:  
      */
     public Repair findRepairById(int id);
+
+    /**
+     *
+     * @param repair
+     */
+    void doRepair(Repair repair);
 }

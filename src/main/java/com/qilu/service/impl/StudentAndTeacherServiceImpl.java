@@ -150,4 +150,9 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
     public Repair findRepairById(int id) {
         return repairMapper.findRepairById(id);
     }
+
+    @Override
+    public void doRepair(Repair repair) {
+        repairMapper.insRepairSchool(repair);
+    }
 }
