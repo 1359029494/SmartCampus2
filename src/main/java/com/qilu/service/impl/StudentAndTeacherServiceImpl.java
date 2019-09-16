@@ -120,7 +120,7 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
     }
 
     @Override
-    public int insEvaluate(HttpSession session, String content, int star) {
+    public int insEvaluate(HttpSession session, String name, String content, int star) {
         User user = (User) session.getAttribute("user");
         Evaluate evaluate = new Evaluate();
         if (user.getRole() == 1){
@@ -144,5 +144,15 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
     @Override
     public Knowledge findOneKnowledgeByid(int id) {
         return knowledgeMapper.findByid(id);
+    }
+
+    @Override
+    public Repair findRepairById(int id) {
+        return repairMapper.findOrderInfo(id);
+    }
+
+    @Override
+    public void doRepair(Repair repair) {
+        repairMapper.insRepairSchool(repair);
     }
 }

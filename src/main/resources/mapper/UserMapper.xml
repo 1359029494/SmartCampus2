@@ -9,4 +9,13 @@
         <result column="password" property="password"></result>
         <result column="role" property="role"></result>
     </resultMap>
+
+
+    <update id="modifyPasswordByPhone">
+        update t_user set password=#{password} where username in (
+            select stu_no from t_student where phone=#{phone}
+            union all
+            select tea_no from t_teacher where phone=#{phone}
+        )
+    </update>
 </mapper>

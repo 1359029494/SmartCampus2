@@ -59,7 +59,7 @@ public interface StudentAndTeacherService {
      * @auther: 治毅
      * @date:
      */
-    public int insEvaluate(HttpSession session, String content, int star);
+    public int insEvaluate(HttpSession session, String name, String content, int star);
 
     /**
      * 功能描述:校园安全小知识
@@ -79,4 +79,19 @@ public interface StudentAndTeacherService {
      */
 
     public Knowledge findOneKnowledgeByid(int id);
+    
+    /**
+     * 功能描述:通过主键id查询报修信息
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    public Repair findRepairById(int id);
+
+    /**
+     *
+     * @param repair
+     */
+    void doRepair(Repair repair);
 }

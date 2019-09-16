@@ -26,7 +26,7 @@ public interface RepairMapper {
      * @auther: 治毅
      * @date:
      */
-    @Insert("insert into t_repair values(default,#{role},#{userId},#{type},#{local},#{photo},null,#{repairDate},null,0,0,0)")
+    @Insert("insert into t_repair values(default,#{role},#{userId},#{type},#{local},#{photo},null,#{repairDate},null,0,0,0,0,#{remarks},#{phone})")
     public int insRepairSchool(Repair r);
 
     /**

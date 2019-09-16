@@ -30,6 +30,7 @@ public class Repair  implements Serializable {
     private Integer payStatus;//是否交了罚款 0未  1已
     private Integer fine;//是否罚钱 0罚钱  1不罚钱
     private String remarks;//备注
+    private String phone;
     //一对多，一个保修可以有多个评论
     private List<Evaluate> evaluates;
     //该维修被哪个维修工维修
