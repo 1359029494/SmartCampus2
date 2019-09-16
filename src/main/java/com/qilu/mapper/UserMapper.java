@@ -14,4 +14,8 @@ public interface UserMapper {
     //修改用户密码
     @Update("update t_user set password=#{password} where username=#{username}")
     int modifyPasswordByUsername(@Param("username")String username,@Param("password")String password);
+
+    //修改用户密码byPhone
+    void modifyPasswordByPhone(@Param("phone") String phone,
+                               @Param("password") String password);
 }

@@ -109,5 +109,55 @@ public class UserServiceImpl implements UserService {
         userMapper.modifyPasswordByUsername(user.getUsername(), password);
     }
 
+    @Override
+    public ResponseBean getValiCode(String phone) throws Exception {
+        //========测试开始=======
+
+        String code="321";
+        redisUtils.set(phone,code , 60l);
+        return new ResponseBean();
+
+        //========测试结束=======
+
+
+        /*String code= GetCodeUtils.randomCode();
+        StringBuilder sb = new StringBuilder();
+        sb.append("accountSid").append("=").append(Config.accountId);
+        sb.append("&to").append("=").append(phone);
+        sb.append("&param").append("=").append(URLEncoder.encode(code,"UTF-8"));
+        sb.append("&templateid").append("=").append("1326");
+        String body = sb.toString() + HttpUtil.createCommonParam(Config.accountId, Config.authToken);
+        String result = HttpUtil.post(Config.baseUrl, body);
+        ResponseBean responseBean = gson.fromJson(result, ResponseBean.class);
+
+        if(Objects.equals(responseBean.getRespCode(), "0000")){
+            redisUtils.set(phone,code , 60l);
+            responseBean.setCode(code);
+        }
+        return responseBean;*/
+    }
+
+    @Override
+    public void modifyPasswordByPhone(String code, String phone, String password) {
+        String redisCode =(String) redisUtils.get(phone);
+        if(Objects.isNull(redisCode)){
+            throw new CustomException(-3, "验证码已过期");
+        }
+        if(!Objects.equals(code, redisCode)){
+            throw new CustomException(-4, "验证码不正确");
+        }
+        userMapper.modifyPasswordByPhone(phone, password);
+    }
+
+    @Override
+    public Teacher getTeacher(String teaNo) {
+        return teacherMapper.selectByTeaNo(teaNo);
+    }
+
+    @Override
+    public Student getStudent(String stuNo) {
+        return studentMapper.selectByStuNo(stuNo);
+    }
+
 
 }
