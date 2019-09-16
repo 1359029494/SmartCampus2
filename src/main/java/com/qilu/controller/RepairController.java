@@ -29,11 +29,11 @@ public class RepairController {
     }
     //查看我的接单
     @PostMapping("findMyOrder")
-    public PageInfo<Repair> findMyOrder(@Param("maintainer")int maintainer, @RequestParam(defaultValue = "1") int pageNum){
+    public PageInfo<Repair> findMyOrder(int maintainerId, @RequestParam(defaultValue = "1") int pageNum){
         System.out.println(pageNum);
         PageHelper.startPage(pageNum, 2);
-        System.out.println(maintainer);
-        List<Repair> list = repairService.findMyOrder(maintainer);
+        System.out.println(maintainerId);
+        List<Repair> list = repairService.findMyOrder(maintainerId);
         System.out.println(list.size());
         PageInfo<Repair> pageInfo = new PageInfo<>(list);
         System.out.println(pageInfo);
@@ -41,28 +41,28 @@ public class RepairController {
     }
     //查看我的未修订单
     @PostMapping("findMyOrderWithNo")
-    public PageInfo<Repair> findMyOrderWithNo(@Param("maintainer")int maintainer, @RequestParam(defaultValue = "1") int pageNum){
+    public PageInfo<Repair> findMyOrderWithNo(int maintainerId, @RequestParam(defaultValue = "1") int pageNum){
         System.out.println(pageNum);
         PageHelper.startPage(pageNum, 3);
-        List<Repair> list = repairService.findMyOrderWithNo(maintainer);
+        List<Repair> list = repairService.findMyOrderWithNo(maintainerId);
         PageInfo<Repair> pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
     //查看我的已完工订单
     @PostMapping("findMyOrderWithYes")
-    public PageInfo<Repair> findMyOrderWithYes(@Param("maintainer")int maintainer, @RequestParam(defaultValue = "1") int pageNum){
+    public PageInfo<Repair> findMyOrderWithYes(int maintainerId, @RequestParam(defaultValue = "1") int pageNum){
         System.out.println(pageNum);
         PageHelper.startPage(pageNum, 3);
-        List<Repair> list = repairService.findMyOrderWithYes(maintainer);
+        List<Repair> list = repairService.findMyOrderWithYes(maintainerId);
         PageInfo<Repair> pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
     //查看所有单子
     @GetMapping("findOrder")
-    public PageInfo<Repair> findOrder(@Param("maintainer")int maintainer,@RequestParam(defaultValue = "1") int pageNum){
+    public PageInfo<Repair> findOrder(int maintainerId,@RequestParam(defaultValue = "1") int pageNum){
         System.out.println(pageNum);
         PageHelper.startPage(pageNum, 2);
-        List<Repair> list = repairService.findOrder( );
+        List<Repair> list = repairService.findOrder();
         System.out.println(list.size());
         PageInfo<Repair> pageInfo = new PageInfo<>(list);
         System.out.println(pageInfo);
@@ -70,7 +70,7 @@ public class RepairController {
     }
     //罚款 //新建罚款单
     @PutMapping("fine")
-    public JsonData fine(int id,@Param("maintainer")int repairId,@Param("money") BigDecimal money){
+    public JsonData fine(int id,@Param("repairId")int repairId,@Param("money") BigDecimal money){
         repairService.fine(id);
         int r1=(int)(Math.random()*(10));//产生2个0-9的随机数
         int r2=(int)(Math.random()*(10));
@@ -91,20 +91,20 @@ public class RepairController {
     }
     //接单
     @PutMapping("receipt")
-    public JsonData receipt(int id,int maintainer){
-        repairService.receipt(id,maintainer);
+    public JsonData receipt(int id,int maintainerId){
+        repairService.receipt(id,maintainerId);
         return JsonData.buildSuccess("成功接单");
     }
     //查询数目
     @PutMapping("getNumber")
-    public JsonData getNumber(int maintainer){
-        Map<String,Integer> map=repairService.getNumber(maintainer);
+    public JsonData getNumber(int maintainerId){
+        Map<String,Integer> map=repairService.getNumber(maintainerId);
         return JsonData.buildSuccess(map);
     }
     //查询评价
     @PutMapping("check")
-    public PageInfo<Evaluate> check(int maintainer){
-        List<Evaluate> list = repairService.check(maintainer);
+    public PageInfo<Evaluate> check(int maintainerId){
+        List<Evaluate> list = repairService.check(maintainerId);
         System.out.println(list.size());
         PageInfo<Evaluate> pageInfo = new PageInfo<>(list);
         System.out.println(pageInfo);

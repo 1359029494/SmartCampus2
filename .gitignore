@@ -1,0 +1,17 @@
+$ vim .gitignore
+
+git config --global core.excludesfile '~/.gitignore'
+
+/.idea/
+.idea
+out
+
+
+git rm -r --cached .idea       #### --cached不会把本地的.idea删除
+
+git add .
+
+git commit -m '忽略idea'
+
+git push
+target/

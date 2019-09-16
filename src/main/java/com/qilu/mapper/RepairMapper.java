@@ -63,8 +63,8 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} ")
-    public List<Repair> findMyOrder(int maintainer_id);
+    @Select("select t.* from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} ")
+    public List<Repair> findMyOrder(int maintainerId);
 
     /**
      * 功能描述:维修人查看待修的订单
@@ -73,17 +73,22 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} AND service_status=0")
-    public List<Repair> findMyOrderWithNo(int maintainer_id);
+    @Select("select t.* from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} AND service_status=0")
+    public List<Repair> findMyOrderWithNo(int maintainerId);
 
     /**
-     * 功能描述:维修人查看待修的订单
+     * 功能描述:维修人查看订单详细
      * @param:
      * @return:
      * @auther: xy
      * @date:
      */
-    @Select("select * from t_repair where id=#{id}")
+    @Select("SELECT *,\n" +
+            "(CASE WHEN (select role from t_repair where id=#{id})=1 \n" +
+            "THEN (select name from t_student where id=#{id}) \n" +
+            "WHEN (select role from t_repair where id=#{id})=2 \n" +
+            "THEN (select name from t_teacher where id=#{id})  END) \n" +
+            "AS name FROM t_repair where id=#{id}")
     public Repair findOrderInfo(int id);
     /**
      * 功能描述:维修人查看完工的订单
@@ -92,8 +97,8 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} AND service_status=1 ")
-    public List<Repair> findMyOrderWithYes(int maintainer_id);
+    @Select("select * from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} AND service_status=1 ")
+    public List<Repair> findMyOrderWithYes(int maintainerId);
     /**
      * 功能描述:罚钱
      * @param:
@@ -140,8 +145,8 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select count(*) from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id}")
+    @Select("select count(*) from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId}")
     public int countMyOrder(int maintainerId);
-    @Select("select count(*) from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} AND service_status=0")
+    @Select("select count(*) from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} AND service_status=0")
     public int countMyOrderNo(int maintainerId);
 }

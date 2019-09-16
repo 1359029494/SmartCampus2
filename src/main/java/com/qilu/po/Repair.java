@@ -34,5 +34,5 @@ public class Repair  implements Serializable {
     private List<Evaluate> evaluates;
     //该维修被哪个维修工维修
     private Maintainer maintainer;
-    private Integer userName;//保修用户名
+    private String name;//报修人名
 }
