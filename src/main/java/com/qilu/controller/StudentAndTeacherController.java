@@ -53,7 +53,6 @@ public class StudentAndTeacherController {
      */
     @GetMapping("findEvaluateById")
     public JsonData findEvaluateById(int id){
-        System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhh");
         return JsonData.buildSuccess(stuService.findOneEvaByid4Student(id));
     }
 

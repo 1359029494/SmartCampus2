@@ -162,6 +162,7 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
         }
         evaluate.setContent(content);
         evaluate.setStar(star);
+        evaluate.setMaintainerName(name);
         return evaluateMapper.insEvaluate(evaluate);
     }
 
