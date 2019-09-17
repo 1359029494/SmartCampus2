@@ -36,8 +36,8 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from s_evaluate where maintainer_id=#{id}")
-    List<Evaluate> findEvaluate(int id);
+    @Select("select * from t_evaluate where maintainer_id=#{maintainerId}")
+    List<Evaluate> findEvaluate(int maintainerId);
     /**
      * 功能描述:维修人查看个人信息
      * @param:
@@ -45,7 +45,7 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from s_maintainer  where id=#{id}")
+    @Select("select * from t_maintainer  where id=#{id}")
     Maintainer findMaintenance(int id);
     /**
      * 功能描述:维修人查看所有订单
@@ -63,8 +63,8 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from t_repair t left join s_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} ")
-    public List<Repair> findMyOrder(int maintainer_id);
+    @Select("select t.* from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} ")
+    public List<Repair> findMyOrder(int maintainerId);
 
     /**
      * 功能描述:维修人查看待修的订单
@@ -73,9 +73,23 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from t_repair t left join s_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} AND service_status=0")
-    public List<Repair> findMyOrderWithNo(int maintainer_id);
+    @Select("select t.* from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} AND service_status=0")
+    public List<Repair> findMyOrderWithNo(int maintainerId);
 
+    /**
+     * 功能描述:维修人查看订单详细
+     * @param:
+     * @return:
+     * @auther: xy
+     * @date:
+     */
+    @Select("SELECT *,\n" +
+            "(CASE WHEN (select role from t_repair where id=#{id})=1 \n" +
+            "THEN (select name from t_student where id=#{id}) \n" +
+            "WHEN (select role from t_repair where id=#{id})=2 \n" +
+            "THEN (select name from t_teacher where id=#{id})  END) \n" +
+            "AS name FROM t_repair where id=#{id}")
+    public Repair findOrderInfo(int id);
     /**
      * 功能描述:维修人查看完工的订单
      * @param:
@@ -83,8 +97,8 @@ public interface RepairMapper {
      * @auther: xy
      * @date:
      */
-    @Select("select * from t_repair t left join s_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id} AND service_status=1 ")
-    public List<Repair> findMyOrderWithYes(int maintainer_id);
+    @Select("select * from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} AND service_status=1 ")
+    public List<Repair> findMyOrderWithYes(int maintainerId);
     /**
      * 功能描述:罚钱
      * @param:
@@ -94,6 +108,15 @@ public interface RepairMapper {
      */
     @Update("update t_repair set fine=1 where id=#{id}")
     public int fine(int id);
+    /**
+     * 功能描述:新建罚款单
+     * @param:
+     * @return:
+     * @auther: xy
+     * @date:
+     */
+    @Insert("insert into t_order (orderNo,repair_id,money,order_date) values (#{orderNo},#{repairId},#{money},#{orderDate})")
+    public int insertFineOrder(Order order);
     /**
      * 功能描述:完工
      * @param:
@@ -112,23 +135,18 @@ public interface RepairMapper {
      */
     @Insert("update t_repair set repair_status=1  where id=#{id}")
     public int receipt(int id);
+    @Insert("Insert into t_receipt (id,maintainer_id) values (#{id},#{maintainerId})")
+    public int receiptT(int id,int maintainerId);
+
     /**
-     * 功能描述:新建罚款单
+     * 功能描述:查询所有已接单数、未修单数、已完工单数
      * @param:
      * @return:
      * @auther: xy
      * @date:
      */
-    @Insert("insert into s_order (orderNo,repair_id,money,order_date) values (#{orderNo},#{repairId},#{money},#{orderDate})")
-    public int insertFineOrder(Order order);
-    
-    /**
-     * 功能描述:通过主键id查询报修信息
-     * @param: 
-     * @return: 
-     * @auther: 治毅
-     * @date:  
-     */
-    @Select("select * from t_repair where id=#{id}")
-    public Repair findRepairById(int id);
+    @Select("select count(*) from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId}")
+    public int countMyOrder(int maintainerId);
+    @Select("select count(*) from t_repair t left join t_receipt s on t.id=s.id where s.maintainer_id=#{maintainerId} AND service_status=0")
+    public int countMyOrderNo(int maintainerId);
 }

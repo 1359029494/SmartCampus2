@@ -177,7 +177,7 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
 
     @Override
     public Repair findRepairById(int id) {
-        return repairMapper.findRepairById(id);
+        return repairMapper.findOrderInfo(id);
     }
 
     @Override
