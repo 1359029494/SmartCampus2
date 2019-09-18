@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qilu.mapper.AdminMapper">
+
+    <insert id="insertStudent" parameterType="List" useGeneratedKeys="true" >
+        insert into t_student values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            default,
+            #{item.name},
+            #{item.sex},
+            #{item.phone},
+            #{item.stuNo},
+            #{item.college},
+            null
+            )
+        </foreach>
+    </insert>
+
+    <select id="getAllRepair" resultType="com.qilu.response.RepairResp">
+     select rep.id,us.username,rep.role,rep.phone,rep.local,rep.repair_date,main.name,rep.fine,rep.service_status,rep.service_date
+from t_repair rep,t_user us,t_receipt rec,t_maintainer main
+where rep.user_id=us.id and rep.id=rec.repair_id and rec.maintainer_id=main.id
+    </select>
+
+
+
+</mapper>
