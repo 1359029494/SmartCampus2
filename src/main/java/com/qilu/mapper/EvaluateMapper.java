@@ -22,6 +22,6 @@ public interface EvaluateMapper {
      * @auther: 治毅
      * @date:
      */
-    @Insert("insert into t_evaluate values(default,#{role},#{userId},#{maintainer_name},#{content},#{star})")
+    @Insert("insert into t_evaluate(id,role,user_id,maintainer_name,content,star) values(default,#{role},#{userId},#{maintainer_name},#{content},#{star})")
     public int insEvaluate(Evaluate e);
 }

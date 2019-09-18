@@ -1,13 +1,17 @@
 package com.qilu.service;
 
+import com.qilu.po.Evaluate;
 import com.qilu.po.Maintainer;
 import com.qilu.po.Order;
 import com.qilu.po.Repair;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RepairService {
     public List<Repair> findMyRepair(int roleType, int userId);
+
+    public List<Evaluate> check(int maintainer);
 
     public int insRepairSchool(Repair r);
 
@@ -24,7 +28,10 @@ public interface RepairService {
     public List<Repair> findMyOrderWithNo(int maintainer_id);
 
     //查看已接完工的订单
-    public List<Repair> findMyOrderWithYes(int maintainer_id);
+    public List<Repair> findMyOrderWithYes(int maintainerId);
+
+    //查看订单详细
+    public Repair findOrderInfo(int id);
 
     //罚款
     public int fine(int id);
@@ -36,5 +43,8 @@ public interface RepairService {
     public int finish(int id);
 
     //接单
-    public int receipt(int id);
+    public int receipt(int id,int maintainer_id);
+
+    //查询所有已接单数、未修单数、已完工单数
+    public Map getNumber(int maintainer_id);
 }

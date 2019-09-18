@@ -16,9 +16,15 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
     @Autowired
@@ -55,36 +61,59 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
     }
 
     @Override
-    public int repirSchool(HttpSession session, String type, String local, HttpServletRequest request) {
+    public int repirSchool(HttpSession session, String type, String local, String describe, HttpServletRequest request) {
         User user = (User) session.getAttribute("user");
         Repair repair = new Repair();
         StringBuffer path = new StringBuffer();
-            Student student = user.getStudent();
             if (user.getRole() == 1){
                 repair.setRole(1);
+                Student student = user.getStudent();
+                repair.setUserId(student.getId());
+                repair.setPhone(student.getPhone());
             }
             if (user.getRole() == 2){
                 repair.setRole(2);
+                Teacher teacher = user.getTeacher();
+                repair.setUserId(teacher.getId());
+                repair.setPhone(teacher.getPhone());
             }
-            repair.setUserId(student.getId());
+            
             repair.setType(type);
             repair.setLocal(local);
+            repair.setRemarks(describe);
+            repair.setRepairDate(new Date());
             MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest) request;
             Iterator<String> files = mrequest.getFileNames();
             while (files.hasNext()){
                 MultipartFile file = mrequest.getFile(files.next());
                 String fileName1 = file.getOriginalFilename();
+                System.out.println(fileName1);
                 String suffix = fileName1.substring(fileName1.lastIndexOf("."));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 String fileName = sdf.format(new Date()) + suffix;
                 File dir = null;
                 if (System.getProperties().getProperty("os.name").toLowerCase().startsWith("win")) {
-                    dir = new File("G:/student/repair" + student.getStuNo());
+                    if (user.getRole() == 1){
+                        dir = new File("G:/student/repair/" + user.getStudent().getStuNo());
+                        path.append("G:/student/repair" + user.getStudent().getStuNo() + fileName + ";");
+                    }
+                    if (user.getRole() == 2){
+                        dir = new File("G:/teacher/repair/" + user.getTeacher().getTeaNo());
+                        path.append("G:/teacher/repair" + user.getStudent().getStuNo() + fileName + ";");
+                    }
                     if (!dir.exists()) {
                         dir.mkdirs();
                     }
                 }else {
-                    dir = new File("/usr/local/static/student/repair" + student.getStuNo());
+                    if (user.getRole() == 1){
+                        dir = new File("/usr/local/static/student/repair" + user.getStudent().getStuNo());
+                        path.append("/usr/local/static/student/repair" + user.getStudent().getStuNo() + fileName + ";");
+                    }
+                    if (user.getRole() == 2){
+                        dir = new File("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo());
+                        path.append("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo() + fileName + ";");
+                    }
+                    
                     if (!dir.exists()) {
                         dir.mkdirs();
                     }
@@ -94,7 +123,7 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                path.append("repair" + student.getStuNo() + fileName);
+                
             }
 
         repair.setPhoto(path.toString());
@@ -133,6 +162,7 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
         }
         evaluate.setContent(content);
         evaluate.setStar(star);
+        evaluate.setMaintainerName(name);
         return evaluateMapper.insEvaluate(evaluate);
     }
 
@@ -148,11 +178,96 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
 
     @Override
     public Repair findRepairById(int id) {
-        return repairMapper.findRepairById(id);
+        return repairMapper.findOrderInfo(id);
     }
 
     @Override
-    public void doRepair(Repair repair) {
-        repairMapper.insRepairSchool(repair);
+    public String uploadPhoto(HttpServletRequest request, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        String flag = "失败";
+        MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest) request;
+        Iterator<String> files = mrequest.getFileNames();
+        while (files.hasNext()){
+            MultipartFile file = mrequest.getFile(files.next());
+            String fileName1 = file.getOriginalFilename();
+            System.out.println(fileName1);
+            String suffix = fileName1.substring(fileName1.lastIndexOf("."));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            String fileName = sdf.format(new Date()) + suffix;
+            File dir = null;
+            //如果是windows系统
+            if (System.getProperties().getProperty("os.name").toLowerCase().startsWith("win")){
+                dir = null;
+                if (user.getRole() == 1){
+                    dir = new File("E:\\studnet\\" + user.getStudent().getStuNo());
+                }
+                if (user.getRole() == 2){
+                    dir = new File("E:\\teacher\\" + user.getTeacher().getTeaNo());
+                }
+                //如果不存在就创建一个
+                if (!dir.exists()){
+                    dir.mkdirs();
+                }
+                String uuid = UUID.randomUUID().toString();
+                //将字节流从输入流复制到文件目标
+                try {
+                    FileUtils.copyInputStreamToFile(file.getInputStream(), new File(dir + "/" + uuid + suffix));//返回InputStream读取文件的内容, new File(dir + "\\" + uuid + suffix)//目标路径);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //将路径存入数据库
+                if (user.getRole() == 1){
+                    int num = studentMapper.uploadPhoto(dir + "/" + uuid + suffix, user.getStudent().getId());
+                    if (num > 0){
+                        flag = "成功";
+                    }
+                }
+                if (user.getRole() == 2){
+                    int num = teacherMapper.uploadPhoto(dir + "/" + uuid + suffix, user.getTeacher().getId());
+                    if (num > 0){
+                        flag = "成功";
+                    }
+                }
+            }else { //如果是Linux系统
+                String path = "/user/student/head_img";
+                String path2 = "/user/teacher/head_img";
+                dir = null;
+                if (user.getRole() == 1){
+                    dir = new File(path + "/" + user.getStudent().getStuNo());
+                }
+                if (user.getRole() == 2){
+                    dir = new File(path2 + "/" + user.getStudent().getStuNo());
+                }
+                //如果不存在就创建一个
+                if (!dir.exists()){
+                    dir.mkdirs();
+                }
+                String uuid = UUID.randomUUID().toString();
+                try {
+                    FileUtils.copyInputStreamToFile(file.getInputStream(), new File(dir + "/" + uuid + suffix));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //将路径存入数据库
+                if (user.getRole() == 1){
+                    int num = studentMapper.uploadPhoto(dir + "/" + uuid + suffix, user.getStudent().getId());
+                    if (num > 0){
+                        flag = "成功";
+                    }
+                }
+                if (user.getRole() == 2){
+                    int num = teacherMapper.uploadPhoto(dir + "/" + uuid + suffix, user.getTeacher().getId());
+                    if (num > 0){
+                        flag = "成功";
+                    }
+                }
+            }
+            try {
+                FileUtils.copyInputStreamToFile(file.getInputStream(), new File(dir + "/" + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
     }
 }
