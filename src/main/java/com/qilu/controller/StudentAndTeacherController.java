@@ -162,4 +162,20 @@ public class StudentAndTeacherController {
     public JsonData uploadPhoto(HttpServletRequest request, HttpSession session){
         return JsonData.buildSuccess("success", stuService.uploadPhoto(request, session));
     }
+    
+    /**
+     * 功能描述:更新订单为已支付
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    public JsonData updateOrder(int repairId){
+        int flag = stuService.updOrder2HasPay(repairId);
+        if (flag > 0){
+            return JsonData.buildSuccess("success", 1);
+        }else {
+            return JsonData.buildError("success", 0);
+        }
+    }
 }

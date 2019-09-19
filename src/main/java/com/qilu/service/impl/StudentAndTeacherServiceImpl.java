@@ -44,6 +44,9 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
 
     @Resource
     private KnowledgeMapper knowledgeMapper;
+    
+    @Resource
+    private OrderMapper orderMapper;
 
     public List<Repair> findProgress(HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -269,5 +272,19 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
             }
         }
         return flag;
+    }
+
+    @Override
+    public int updOrder2HasPay(int repairId) {
+        Order order = new Order();
+        order.setPayDate(new Date());
+        order.setRepairId(repairId);
+        int flag1 = repairMapper.updRepair2Fine(repairId);
+        int flag2 = orderMapper.updOrder2HasPay(order);
+        if (flag1> 0 && flag2 > 0){
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
