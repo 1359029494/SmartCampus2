@@ -98,4 +98,13 @@ public interface StudentAndTeacherService {
      * @date:  
      */
     public String uploadPhoto(HttpServletRequest request, HttpSession session);
+    
+    /**
+     * 功能描述:更新订单为已支付
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    public int updOrder2HasPay(int repairId);
 }
