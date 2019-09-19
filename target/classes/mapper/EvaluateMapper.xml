@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qilu.mapper.EvaluateMapper">
+    <resultMap id="evaluateMap" type="Evaluate">
+        <id column="id" property="id"></id>
+        <result column="role" property="role"></result>
+        <result column="userId" property="userId"></result>
+        <result column="content" property="content"></result>
+        <result column="maintainerId" property="maintainerId"></result>
+        <result column="maintainerName" property="maintainerName"></result>
+        <result column="star" property="star"></result>
+    </resultMap>
+</mapper>

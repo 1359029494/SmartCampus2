@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qilu.mapper.OrderMapper">
+    <resultMap id="OrderMap" type="Order">
+        <id column="id" property="id"></id>
+        <result column="orderNo" property="orderNo"></result>
+        <result column="repairId" property="repairId"></result>
+        <result column="money" property="money"></result>
+        <result column="orderDate" property="oderDate"></result>
+        <result column="payDate" property="payDate"></result>
+        <result column="payState" property="payState"></result>
+    </resultMap>
+</mapper>
