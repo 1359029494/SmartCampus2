@@ -35,7 +35,7 @@ public class RepairServiceImpl implements RepairService {
 
     @Override
     public Maintainer findMyInfo(int id) {
-        return null;
+        return repairMapper.findMaintenance(id);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class RepairServiceImpl implements RepairService {
 
     @Override
     public List<Repair> findMyOrderWithNo(int maintainer_id) {
-        return null;
+        return repairMapper.findMyOrderWithNo(maintainer_id);
     }
 
     @Override
     public List<Repair> findMyOrderWithYes(int maintainer_id) {
-        return null;
+        return repairMapper.findMyOrderWithYes(maintainer_id);
     }
 
     @Override
