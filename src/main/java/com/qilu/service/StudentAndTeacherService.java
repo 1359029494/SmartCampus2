@@ -107,4 +107,6 @@ public interface StudentAndTeacherService {
      * @date:  
      */
     public int updOrder2HasPay(int repairId);
+
+    public void doRepair(Repair repair);
 }

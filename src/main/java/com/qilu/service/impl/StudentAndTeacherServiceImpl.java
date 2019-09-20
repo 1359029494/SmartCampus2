@@ -287,4 +287,10 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
             return 0;
         }
     }
+
+
+    @Override
+    public void doRepair(Repair repair) {
+        repairMapper.insRepairSchool(repair);
+    }
 }
