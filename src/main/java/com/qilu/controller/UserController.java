@@ -50,4 +50,6 @@ public class UserController {
         userService.modifyPasswordByPhone(valiCode,phone,password);
         return JsonData.buildSuccess("密码修改成功");
     }
+    
+    
 }

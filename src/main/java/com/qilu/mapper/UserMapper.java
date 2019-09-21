@@ -18,4 +18,5 @@ public interface UserMapper {
     //修改用户密码byPhone
     void modifyPasswordByPhone(@Param("phone") String phone,
                                @Param("password") String password);
+    
 }

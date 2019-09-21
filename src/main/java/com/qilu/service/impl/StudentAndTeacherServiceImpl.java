@@ -44,6 +44,9 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
 
     @Resource
     private KnowledgeMapper knowledgeMapper;
+    
+    @Resource
+    private OrderMapper orderMapper;
 
     public List<Repair> findProgress(HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -95,11 +98,11 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
                 if (System.getProperties().getProperty("os.name").toLowerCase().startsWith("win")) {
                     if (user.getRole() == 1){
                         dir = new File("G:/student/repair/" + user.getStudent().getStuNo());
-                        path.append("G:/student/repair" + user.getStudent().getStuNo() + fileName + ";");
+                        path.append("G:/student/repair" + user.getStudent().getStuNo() + "/" + fileName + ";");
                     }
                     if (user.getRole() == 2){
                         dir = new File("G:/teacher/repair/" + user.getTeacher().getTeaNo());
-                        path.append("G:/teacher/repair" + user.getStudent().getStuNo() + fileName + ";");
+                        path.append("G:/teacher/repair" + user.getStudent().getStuNo() + "/" + fileName + ";");
                     }
                     if (!dir.exists()) {
                         dir.mkdirs();
@@ -107,11 +110,11 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
                 }else {
                     if (user.getRole() == 1){
                         dir = new File("/usr/local/static/student/repair" + user.getStudent().getStuNo());
-                        path.append("/usr/local/static/student/repair" + user.getStudent().getStuNo() + fileName + ";");
+                        path.append("/usr/local/static/student/repair" + user.getStudent().getStuNo() + "/" + fileName + ";");
                     }
                     if (user.getRole() == 2){
                         dir = new File("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo());
-                        path.append("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo() + fileName + ";");
+                        path.append("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo() + "/" +fileName + ";");
                     }
                     
                     if (!dir.exists()) {
@@ -160,6 +163,7 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
             evaluate.setRole(2);
             evaluate.setUserId(user.getTeacher().getId());
         }
+        evaluate.setMaintainerName(name);
         evaluate.setContent(content);
         evaluate.setStar(star);
         evaluate.setMaintainerName(name);
@@ -269,5 +273,25 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
             }
         }
         return flag;
+    }
+
+    @Override
+    public int updOrder2HasPay(int repairId) {
+        Order order = new Order();
+        order.setPayDate(new Date());
+        order.setRepairId(repairId);
+        int flag1 = repairMapper.updRepair2Fine(repairId);
+        int flag2 = orderMapper.updOrder2HasPay(order);
+        if (flag1> 0 && flag2 > 0){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+
+    @Override
+    public void doRepair(Repair repair) {
+        repairMapper.insRepairSchool(repair);
     }
 }

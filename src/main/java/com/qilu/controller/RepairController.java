@@ -13,10 +13,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/repair")
 public class RepairController {
     @Resource
@@ -58,14 +61,15 @@ public class RepairController {
         return pageInfo;
     }
     //查看所有单子
+    @CrossOrigin(origins = "*")
     @GetMapping("findOrder")
-    public PageInfo<Repair> findOrder(int maintainerId,@RequestParam(defaultValue = "1") int pageNum){
-        System.out.println(pageNum);
+    public PageInfo<Repair> findOrder(@RequestParam(defaultValue = "1") int pageNum){
+
         PageHelper.startPage(pageNum, 2);
         List<Repair> list = repairService.findOrder();
-        System.out.println(list.size());
+
         PageInfo<Repair> pageInfo = new PageInfo<>(list);
-        System.out.println(pageInfo);
+
         return pageInfo;
     }
     //罚款 //新建罚款单
@@ -80,6 +84,8 @@ public class RepairController {
         order.setOrderNo(orderNo);
         order.setMoney(money);
         order.setRepairId(repairId);
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        order.setOrderDate(new Date());
         repairService.insertFineOrder(order);
         return JsonData.buildSuccess("已发送罚款信息");
     }
@@ -87,7 +93,7 @@ public class RepairController {
     @PutMapping("finish")
     public JsonData finish(int id){
         repairService.finish(id);
-        return JsonData.buildSuccess();
+        return JsonData.buildSuccess("已完工");
     }
     //接单
     @PutMapping("receipt")
@@ -103,11 +109,10 @@ public class RepairController {
     }
     //查询评价
     @PutMapping("check")
-    public PageInfo<Evaluate> check(int maintainerId){
+    public PageInfo<Evaluate> check(int maintainerId,@RequestParam(defaultValue = "1") int pageNum){
+        PageHelper.startPage(pageNum, 2);
         List<Evaluate> list = repairService.check(maintainerId);
-        System.out.println(list.size());
         PageInfo<Evaluate> pageInfo = new PageInfo<>(list);
-        System.out.println(pageInfo);
         return pageInfo;
     }
     //订单详细
