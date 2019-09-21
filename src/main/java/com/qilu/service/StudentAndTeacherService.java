@@ -1,6 +1,7 @@
 package com.qilu.service;
 
 import com.qilu.po.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,7 +24,7 @@ public interface StudentAndTeacherService {
      * @auther: 治毅
      * @date:
      */
-    public int repirSchool(HttpSession session, String type, String local, HttpServletRequest request);
+    public int repirSchool(HttpSession session, String type, String local, String describe, HttpServletRequest request);
 
     /**
      * 功能描述:通过评价表id查询评价
@@ -88,10 +89,24 @@ public interface StudentAndTeacherService {
      * @date:  
      */
     public Repair findRepairById(int id);
-
+    
     /**
-     *
-     * @param repair
+     * 功能描述:上传头像
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
      */
-    void doRepair(Repair repair);
+    public String uploadPhoto(HttpServletRequest request, HttpSession session);
+    
+    /**
+     * 功能描述:更新订单为已支付
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    public int updOrder2HasPay(int repairId);
+
+    public void doRepair(Repair repair);
 }
