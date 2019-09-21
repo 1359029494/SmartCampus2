@@ -4,8 +4,8 @@ layui.config({
 	dialog: 'dialog',
 });
 
-layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element'], function() {
-	var form = layui.form(),
+layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'element'], function() {
+	var form = layui.form,
 		layer = layui.layer,
 		$ = layui.jquery,
 		dialog = layui.dialog;

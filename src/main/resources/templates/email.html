@@ -104,7 +104,7 @@
 									<th class="hidden-xs">创建时间</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="tablebody">
 								<tr>
 									<td><input type="checkbox" name="" lay-skin="primary"></td>
 									<td class="hidden-xs">淘宝网</td>
@@ -185,10 +185,10 @@
 					laypage = layui.laypage,
 					$ = layui.jquery;
 				//获取当前iframe的name值
-				var iframeObj = $(window.frameElement).attr('name');	
-				
+				var iframeObj = $(window.frameElement).attr('name');
+            // email-del-btn
 				$('#write-email-btn').on('click',function(){
-					parent.page("写邮件", 'email-write.html', iframeObj, w = "700px", h = "600px");
+					parent.page("编写小知识", 'email-write.html', iframeObj, w = "700px", h = "600px");
 				})
 				//列表
 				$('.email-folder').on('click','a',function(){
@@ -218,7 +218,7 @@
 					});
 					form.render('checkbox');
 				});
-		
+
 				form.render();
 				//非手机端，设置高度
 				if(window.innerWidth>=768){

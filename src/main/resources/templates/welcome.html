@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="renderer" content="webkit">
@@ -56,54 +56,7 @@
 						<div class="panel-body">
 							<div class="commentbox">
 								<ul class="commentList">
-								  <li class="item cl"> 
-								    <div class="comment-main">
-								      <header class="comment-header">
-								        <div class="comment-meta">
-								          <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20">2014-8-31 15:20</time>
-								        </div>
-								      </header>
-								      <div class="comment-body">
-								        <p>故障内容</p>
-								      </div>
-								    </div>
-								  </li>
-								  <li class="item cl"> 
-								    <div class="comment-main">
-								      <header class="comment-header">
-								        <div class="comment-meta">
-								          <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20">2014-8-31 15:20</time>
-								        </div>
-								      </header>
-								      <div class="comment-body">
-								        <p>系统真不错！！！</p>
-								      </div>
-								    </div>
-								  </li>
-								   <li class="item cl"> 
-								    <div class="comment-main">
-								      <header class="comment-header">
-								        <div class="comment-meta">
-								          <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20">2014-8-31 15:20</time>
-								        </div>
-								      </header>
-								      <div class="comment-body">
-								        <p>系统真不错！！！</p>
-								      </div>
-								    </div>
-								  </li>
-								  <li class="item cl">
-								    <div class="comment-main">
-								      <header class="comment-header">
-								        <div class="comment-meta"><a class="comment-author" href="#">慕枫</a> 评论于
-								          <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20">2014-8-31 15:20</time>
-								        </div>
-								      </header>
-								      <div class="comment-body">
-								        <p><a href="#">@某人</a> 系统真不错！！！</p>
-								      </div>
-								    </div>
-								  </li>
+
 								</ul>
 							</div>
 							<div id="pagesbox" style="text-align: center;padding-top: 5px;">
@@ -122,8 +75,50 @@
 				</div>
 			</div>
 		</div>
+        <script src="/js/jquery.js" type="text/javascript"></script>
 		<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/lib/echarts/echarts.js"></script>
+		<script type="text/javascript">
+            var data = new Array();
+            data[0] = ['10', '12', '21', '54', '260', '830', '710'];
+			data[1] = [10, 12, 28, 56, 270, 860, 710];
+			data[2] = [10, 12, 36, 58, 280, 880, 710];
+            // function showpic() {
+            //     $.ajax({
+            //         type:"post",
+            //         url:"",
+            //         dataType:"text",//返回的类型  是Text文本
+            //         success:function(result) {
+            //             for(var a in result){
+            //                 data[a]=result[a];
+            //             }
+            //         }
+            //     })
+            // }
+		</script>
+        <script type="text/javascript">
+            // getAllRepair
+            function rihght() {
+                var str = "";
+                    $.ajax({
+                        type:"get",
+                        url:"admin/api/getAllRepair",
+                        dataType:"json",//返回的类型  是Text文本
+                        success:function(result) {
+                            for(var a in result.data.list){
+                                console.log(a);
+                                console.log(result.data.list[a]);
+                                str +=  "<li class='item cl'><div class='comment-main'>";
+                                str += "<header class='comment-header'><div class='comment-meta'><time>"+result.data.list[a].repairDate+"</time></div></header>";
+                                str += "<div class='comment-body'><p><a href='#'>@"+result.data.list[a].name+"</a>"+ result.data.list[a].local+"</p></div></div></li>";
+                                if(a>2)
+                                    break;
+                            }
+                            $(".commentList").html(str);
+                        }
+                    })
+            }
+        </script>
 		<script type="text/javascript">
 			layui.use(['layer','jquery'], function(){
 				var layer 	= layui.layer;
@@ -144,6 +139,9 @@
 				    ],
 				    function (ec) {
 				        //--- 折柱 ---
+						var data1 = data[0];
+						var data2 = data[1];
+						var data3 = data[2];
 				        myChart = ec.init(document.getElementById('chart'));
 				        myChart.setOption(
 				        	{
@@ -162,7 +160,7 @@
 						    },
 						    legend: {
 						     	// 故障类型
-						        data: ["会员", "文章", "评论"],
+						        data: ["已维修", "待维修", "总共"],
 						        selectedMode: true,
 						    },
 						    toolbox: {
@@ -211,7 +209,7 @@
 						    series: [
 						        {
 						        	// 故障类型
-						            name: "会员",
+						            name: "已维修",
 						            type: "line",
 						            smooth: true,
 						            itemStyle: {
@@ -222,10 +220,10 @@
 						                }
 						            },
 									// 数据内容
-						            data: [10, 12, 21, 54, 260, 830, 710]
+						            data: data1
 						        },
 						        {
-						            name: "文章",
+						            name: "待维修",
 						            type: "line",
 						            smooth: true,
 						            itemStyle: {
@@ -235,10 +233,10 @@
 						                    }
 						                }
 						            },
-						            data: [30, 182, 434, 791, 390, 30, 10]
+						            data: data2
 						        },
 						        {
-						            name: "评论",
+						            name: "总共",
 						            type: "line",
 						            smooth: true,
 						            itemStyle: {
@@ -249,13 +247,15 @@
 						                    color: "rgb(110, 211, 199)"
 						                }
 						            },
-						            data: [1320, 1132, 601, 234, 120, 90, 20]
+						            data: data3
 						        }
 						    ]
 						}
 				        );
 					}
 				);
+
+				rihght();
 				// $(window).resize(function(){
 				// 	myChart.resize();
 				// })

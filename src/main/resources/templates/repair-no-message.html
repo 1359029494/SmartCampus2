@@ -39,157 +39,34 @@
 						<!--</div>-->
 					</form>
 					<div class="layui-form" id="category-table-list">
-						<table class="layui-table" lay-even lay-skin="nob">
-							<colgroup>
-								<col class="hidden-xs">
-								<col class="hidden-xs">
-								<col class="hidden-xs">
-								<col class="hidden-xs">
-								<!--<col class="hidden-xs">-->
-								<!--<col class="hidden-xs">-->
-								<!--<col class="hidden-xs" width="100">-->
-								<!--<col width="150">-->
-							</colgroup>
-							<thead>
-								<tr>
-									<th class="hidden-xs" style="text-align: center">报修人</th>
-									<th style="text-align: center">故障内容</th>
-									<th class="hidden-xs" style="text-align: center">所在地</th>
-									<th class="hidden-xs" style="text-align: center">报修时间</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td class="hidden-xs">1</td>
-									<td>editer</td>
-									<td class="hidden-xs">127.0.0.1</td>
-									<td class="hidden-xs">1989-10-14</td>
-									<!--<td class="hidden-xs">[编辑]</td>-->
-									<!--<td><button class="layui-btn layui-btn-mini layui-btn-warm">拉黑</button></td>-->
-									<!--<td>-->
-										<!--<div class="layui-inline">-->
-											<!--<button class="layui-btn layui-btn-small layui-btn-normal  edit-btn" data-id="1"><i class="layui-icon">&#xe642;</i></button>-->
-											<!--<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="1"><i class="layui-icon">&#xe640;</i></button>-->
-										<!--</div>-->
-									<!--</td>-->
-								</tr>
-								<tr>
-									<td class="hidden-xs">1</td>
-									<td>afei</td>
-									<td class="hidden-xs">127.0.0.1</td>
-									<td class="hidden-xs">1989-10-14</td>
-									<!--<td class="hidden-xs">[管理员]</td>-->
-									<!--<td><button class="layui-btn layui-btn-mini layui-btn-normal">正常</button></td>-->
-									<!--<td>-->
-										<!--<div class="layui-inline">-->
-											<!--<button class="layui-btn layui-btn-small layui-btn-normal  edit-btn" data-id="1"><i class="layui-icon">&#xe642;</i></button>-->
-											<!--<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="1"><i class="layui-icon">&#xe640;</i></button>-->
-										<!--</div>-->
-									<!--</td>-->
-								</tr>
-
-							</tbody>
-						</table>
-						<!--tp分页-->
-						<div class="page-wrap">
-							<ul class="pagination">
-								<li class="disabled"><span>«</span></li>
-								<li class="active"><span>1</span></li>
-								<li>
-									<a href="/repair-no-message.html?page=2">2</a>
-								</li>
-								<li>
-									<a href="/repair-no-message.html?page=2">»</a>
-								</li>
-							</ul>
-						</div>
+						<table class="layui-hide" id="test"></table>
 					</div>
 				</div>
 		</div>
 		<script type="text/javascript">
-			var SCOPE = {
-				static: '/static',
-				index: '/admin/category/index.html',
-				edit: 'menu-add.html',
-				updateEdit: '/admin/category/updateedit.html',
-				status: '/admin/category/updatestatus.html',
-				del: '/admin/category/del.html',
-				listOrderAll: '/admin/category/listorderall.html'
-			}
+
 		</script>
 		<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 
 		<script>
-			layui.config({
-				base: '/js/module/'
-			}).extend({
-				// dialog: 'dialog',
-				load: 'load',
-				common: '../common'
-			});
-			layui.use(['form', 'jquery', 'layer', /*'dialog',*/ 'common', 'element'], function() {
-				var form = layui.form(),
-					layer = layui.layer,
-					$ = layui.jquery,
-                    // dialog = layui.dialog,
-					common = layui.common,
-					element = layui.element();
+			layui.use(['form', 'laypage', 'jquery','layer','table'], function() {
+				var table = layui.table;
 
-				//获取当前iframe的name值
-				var iframeObj = $(window.frameElement).attr('name');
-				//全选
-				form.on('checkbox(allChoose)', function(data) {
-					var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
-					child.each(function(index, item) {
-						item.checked = data.elem.checked;
-					});
-					form.render('checkbox');
+				table.render({
+					elem: '#test'
+					// 接口
+					,url:'/demo/table/user/'
+					,cols: [[
+							// 参数名              表格列名    是否安排排序
+						{field:'id', width:80, title: 'ID', sort: true}
+						,{field:'username', width:80, title: '报修人'}
+						,{field:'sex', minWidth:260, title: '故障内容' }
+						,{field:'city', width:120, title: '所在地'}
+						,{field:'sign', title: '报修时间', width: 180 , sort: true}
+					]]
+					,page: true
 				});
-				form.render();
-				//顶部添加
-				$('.addBtn').click(function() {
-					//将iframeObj传递给父级窗口,执行操作完成刷新
-					parent.page("菜单添加", SCOPE.add, iframeObj, w = "700px", h = "620px");
-					return false;
-
-				}).mouseenter(function() {
-
-					dialog.tips('添加', '.addBtn');
-
-				})
-				//列表添加
-				$('.add-btn').click(function() {
-					//将iframeObj传递给父级窗口
-					parent.page("菜单添加", SCOPE.add, iframeObj, w = "700px", h = "620px");
-					return false;
-
-				})
-				//删除
-				$('.del-btn').on('click', function() {
-					var id = $(this).attr('data-id');
-					common.del(SCOPE.del, id);
-				})
-
-				//排序
-				$('.listOrderBtn').click(function() {
-
-					common.listOrderAll(SCOPE.listOrderAll, '您确定要进行排序吗？');
-					return false;
-
-				}).mouseenter(function() {
-
-					dialog.tips('排序', '.listOrderBtn');
-
-				})
-				//编辑栏目
-				$('#category-table-list').on('click', '.edit-btn', function() {
-					var That = $(this);
-					var id = That.attr('data-id');
-					//将iframeObj传递给父级窗口
-					parent.page("菜单编辑", SCOPE.edit + "?id=" + id, iframeObj, w = "700px", h = "620px");
-				})
 			});
 		</script>
 	</body>
-
 </html>

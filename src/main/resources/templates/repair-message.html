@@ -42,143 +42,37 @@
 						<!--</div>-->
 					</form>
 					<div class="layui-form" id="category-table-list">
-						<table class="layui-table" lay-even lay-skin="nob">
-							<colgroup>
-								<col width="88" class="hidden-xs">
-								<col width="128" class="hidden-xs">
-								<col width="200" class="hidden-xs">
-								<col class="hidden-xs">
-								<col class="hidden-xs">
-								<col width="100" class="hidden-xs">
-								<col width="150" class="hidden-xs">
-								<col width="100" class="hidden-xs">
-							</colgroup>
-							<thead>
-								<tr>
-									<th width="88" class="hidden-xs" style="text-align: center">报修人</th>
-									<th width="128" class="hidden-xs" style="text-align: center">故障内容</th>
-									<th width="200" class="hidden-xs" style="text-align: center">所在地</th>
-									<th class="hidden-xs" style="text-align: center">报修时间</th>
-									<th class="hidden-xs" style="text-align: center">维修时间</th>
-									<th width="100" class="hidden-xs" style="text-align: center">学生评价</th>
-									<th width="150" class="hidden-xs" style="text-align: center">罚钱金额</th>
-									<th width="100" class="hidden-xs" style="text-align: center">学生罚款状态</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td width="88" class="hidden-xs">1</td>
-									<td width="128" class="hidden-xs">editer</td>
-									<td  width="200" class="hidden-xs">127.0.0.1</td>
-									<td class="hidden-xs">1989-10-14</td>
-									<td class="hidden-xs">1989-10-14</td>
-									<td width="100" class="hidden-xs"><button class="layui-btn layui-btn-mini layui-btn-warm">5</button></td>
-									<td width="150" class="hidden-xs">12.25</td>
-									<td width="100" class="hidden-xs"><button class="layui-btn layui-btn-mini layui-btn-warm">是</button></td>
-								</tr>
-
-							</tbody>
-						</table>
-						<!--tp分页-->
-						<div class="page-wrap">
-							<ul class="pagination">
-								<li class="disabled"><span>«</span></li>
-								<li class="active"><span>1</span></li>
-								<li>
-									<a href="/repair-message.html?page=2">2</a>
-								</li>
-								<li>
-									<a target="_self" href="/repair-message.html?page=2">»</a>
-								</li>
-							</ul>
-						</div>
+						<table class="layui-hide" id="test"></table>
 					</div>
 				</div>
 		</div>
-		<script type="text/javascript">
-			var SCOPE = {
-				static: '/static',
-				index: '/admin/category/index.html',
-				edit: 'menu-add.html',
-				updateEdit: '/admin/category/updateedit.html',
-				status: '/admin/category/updatestatus.html',
-				del: '/admin/category/del.html',
-				listOrderAll: '/admin/category/listorderall.html'
-			}
-		</script>
 		<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
 
-		<script>
-			layui.config({
-				base: '/js/module/'
-			}).extend({
-                // dialog: 'dialog',
-                load: 'load',
-				common: '../common'
-			});
-			layui.use(['form', 'jquery', 'layer', 'common', 'element'], function() {
-				var form = layui.form(),
-					layer = layui.layer,
-					$ = layui.jquery,
-					common = layui.common,
-					element = layui.element();
-					// dialog = layui.dialog;
-
-				//获取当前iframe的name值
-				var iframeObj = $(window.frameElement).attr('name');
-				//全选
-				form.on('checkbox(allChoose)', function(data) {
-					var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
-					child.each(function(index, item) {
-						item.checked = data.elem.checked;
-					});
-					form.render('checkbox');
-				});
-				form.render();
-				//顶部添加
-				$('.addBtn').click(function() {
-					//将iframeObj传递给父级窗口,执行操作完成刷新
-					parent.page("菜单添加", SCOPE.add, iframeObj, w = "700px", h = "620px");
-					return false;
-
-				}).mouseenter(function() {
-
-					dialog.tips('添加', '.addBtn');
-
-				})
-				//列表添加
-				$('.add-btn').click(function() {
-					//将iframeObj传递给父级窗口
-					parent.page("菜单添加", SCOPE.add, iframeObj, w = "700px", h = "620px");
-					return false;
-
-				})
-				//删除
-				$('.del-btn').on('click', function() {
-					var id = $(this).attr('data-id');
-					common.del(SCOPE.del, id);
-				})
-
-				//排序
-				$('.listOrderBtn').click(function() {
-
-					common.listOrderAll(SCOPE.listOrderAll, '您确定要进行排序吗？');
-					return false;
-
-				}).mouseenter(function() {
-
-					dialog.tips('排序', '.listOrderBtn');
-
-				})
-				//编辑栏目
-				$('#category-table-list').on('click', '.edit-btn', function() {
-					var That = $(this);
-					var id = That.attr('data-id');
-					//将iframeObj传递给父级窗口
-					parent.page("菜单编辑", SCOPE.edit + "?id=" + id, iframeObj, w = "700px", h = "620px");
-				})
-			});
 		</script>
-	</body>
+		<script>
+			layui.use(['form', 'laypage', 'jquery','layer','table'], function() {
+				var table = layui.table;
 
+
+				table.render({
+					elem: '#test'
+					,url:'/demo/table/user/'
+					,cols: [[
+						{field:'id', width:80, title: 'ID', sort: true}
+						,{field:'username', width:80, title: '报修人'}
+						,{field:'sex', minWidth:260, title: '故障内容' }
+						,{field:'city', width:120, title: '所在地'}
+						,{field:'sign', title: '报修时间', width: 180 , sort: true}
+						,{field:'experience', width:180, title: '维修时间', sort: true}
+						,{field:'score', width:110, title: '学生评价'}
+						,{field:'classify', width:100, title: '罚钱金额'}
+						,{field:'wealth', width:135, title: '学生罚款状态'}
+					]]
+					,page: true
+				});
+			});
+
+		</script>
+    </body>
 </html>
