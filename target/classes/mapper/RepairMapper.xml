@@ -11,12 +11,13 @@
         <result column="local" property="local"></result>
         <result column="photo" property="photo"></result>
         <result column="evaluateId" property="evaluateId"></result>
-        <result column="repairDate" property="repairDate"></result>
-        <result column="serviceDate" property="serviceDate"></result>
-        <result column="repairStatus" property="repairStatus"></result>
-        <result column="serviceStatus" property="serviceStatus"></result>
+        <result column="repair_date" property="repairDate"></result>
+        <result column="service_date" property="serviceDate"></result>
+        <result column="repair_status" property="repairStatus"></result>
+        <result column="service_status" property="serviceStatus"></result>
         <result column="payStatus" property="payStatus"></result>
         <result column="fine" property="fine"></result>
+        <result column="remarks" property="remarks"></result>
         <association property="maintainer" resultMap="MaintainerMap"></association>
     </resultMap>
     <resultMap id="MaintainerMap" type="Maintainer">

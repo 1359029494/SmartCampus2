@@ -98,11 +98,11 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
                 if (System.getProperties().getProperty("os.name").toLowerCase().startsWith("win")) {
                     if (user.getRole() == 1){
                         dir = new File("G:/student/repair/" + user.getStudent().getStuNo());
-                        path.append("G:/student/repair" + user.getStudent().getStuNo() + fileName + ";");
+                        path.append("G:/student/repair" + user.getStudent().getStuNo() + "/" + fileName + ";");
                     }
                     if (user.getRole() == 2){
                         dir = new File("G:/teacher/repair/" + user.getTeacher().getTeaNo());
-                        path.append("G:/teacher/repair" + user.getStudent().getStuNo() + fileName + ";");
+                        path.append("G:/teacher/repair" + user.getStudent().getStuNo() + "/" + fileName + ";");
                     }
                     if (!dir.exists()) {
                         dir.mkdirs();
@@ -110,11 +110,11 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
                 }else {
                     if (user.getRole() == 1){
                         dir = new File("/usr/local/static/student/repair" + user.getStudent().getStuNo());
-                        path.append("/usr/local/static/student/repair" + user.getStudent().getStuNo() + fileName + ";");
+                        path.append("/usr/local/static/student/repair" + user.getStudent().getStuNo() + "/" + fileName + ";");
                     }
                     if (user.getRole() == 2){
                         dir = new File("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo());
-                        path.append("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo() + fileName + ";");
+                        path.append("/usr/local/static/teacher/repair" + user.getTeacher().getTeaNo() + "/" +fileName + ";");
                     }
                     
                     if (!dir.exists()) {

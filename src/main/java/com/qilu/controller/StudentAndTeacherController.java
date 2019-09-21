@@ -193,7 +193,8 @@ public class StudentAndTeacherController {
                              HttpServletRequest request){
 
         String allFileNames = "";//需要存入数据库的路径
-
+        String path = "";
+        User user = (User) request.getSession().getAttribute("user");
         MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
         // 获取文件名集合放入迭代器
         Iterator<String> files = mRequest.getFileNames();
@@ -208,22 +209,74 @@ public class StudentAndTeacherController {
                 e1.printStackTrace();
             }
 
-            // 文件夹是否存在，不存在就创建
-            File dir = new File("D:\\uploadFile");
-            if (!dir.exists())
-                dir.mkdirs();
+            File serverFile = null;
+            
 
-            String filename1 = mFile.getOriginalFilename();
-            String fileExtension = filename1.substring(filename1.lastIndexOf(".")+1);
+            if (System.getProperties().getProperty("os.name").toLowerCase().startsWith("win")) {
+                // 文件夹是否存在，不存在就创建
+                File dir = null;
+                if (user.getRole() == 1){
+                    dir = new File("G:/student/repair/" + user.getStudent().getStuNo());
+                    path = "G:/student/repair/" + user.getStudent().getStuNo();
+                }
+                if (user.getRole() == 2){
+                    new File("G:/teacher/repair/" + user.getTeacher().getTeaNo());
+                    path = "G:/teacher/repair/" + user.getTeacher().getTeaNo();
+                }
+                        
+                if (!dir.exists())
+                    dir.mkdirs();
 
-            // 生成UUID样式的文件名
-            String filename = java.util.UUID.randomUUID().toString() + "." + fileExtension;
+                String filename1 = mFile.getOriginalFilename();
+                String fileExtension = filename1.substring(filename1.lastIndexOf(".")+1);
 
-            allFileNames += filename+";";
-            // 文件全名
-            String fullFilename = dir.getAbsolutePath() + File.separator + filename;
-            // 保存图片
-            File serverFile = new File(fullFilename);
+                // 生成UUID样式的文件名
+                String filename = java.util.UUID.randomUUID().toString() + "." + fileExtension;
+                
+                if (user.getRole() == 1){
+                    allFileNames = "G:/student/repair/" + user.getStudent().getStuNo() + "/" + filename;
+                }
+                if (user.getRole() == 2){
+                    allFileNames = "G:/teacher/repair/" + user.getTeacher().getTeaNo() + "/" + filename;
+                }
+                // 文件全名
+                path = path + "/" + filename + ";";
+                // 保存图片
+                serverFile = new File(allFileNames);
+            }else {
+                // 文件夹是否存在，不存在就创建
+                File dir = null;
+                if (user.getRole() == 1){
+                    dir = new File("/usr/local/static/student/repair"  + user.getStudent().getStuNo());
+                    path = "/usr/local/static/student/repair"  + user.getStudent().getStuNo();
+                }
+                if (user.getRole() == 2){
+                    new File("/usr/local/static/student/repair"  + user.getTeacher().getTeaNo());
+                    path = "/usr/local/static/teacher/repair"  + user.getTeacher().getTeaNo();
+                }
+
+                if (!dir.exists())
+                    dir.mkdirs();
+
+                String filename1 = mFile.getOriginalFilename();
+                String fileExtension = filename1.substring(filename1.lastIndexOf(".")+1);
+
+                // 生成UUID样式的文件名
+                String filename = java.util.UUID.randomUUID().toString() + "." + fileExtension;
+
+                if (user.getRole() == 1){
+                    allFileNames = "/usr/local/static/student/repair" + user.getStudent().getStuNo() + "/" + filename;
+                }
+                if (user.getRole() == 2){
+                    allFileNames = "/usr/local/static/teacher/repair"+ user.getTeacher().getTeaNo() + "/" + filename;
+                }
+                // 文件全名
+                path = path + "/" + filename + ";";
+                // 保存图片
+                serverFile = new File(allFileNames);
+            }
+            
+            
             try {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(bytes);
@@ -232,14 +285,12 @@ public class StudentAndTeacherController {
                 // TODO: handle exception
             }
         }
-        User user = (User) request.getSession().getAttribute("user");
-        String photo = allFileNames.substring(0, allFileNames.length() - 1);
 
         Repair repair=new Repair();
         repair.setPhone(phone);
         repair.setType(type);
         repair.setLocal(local);
-        repair.setPhoto(photo);
+        repair.setPhoto(path);
         repair.setRepairDate(new Date());
         repair.setRepairStatus(0);
         repair.setRemarks(remark);
