@@ -151,12 +151,21 @@ public interface RepairMapper {
     public int countMyOrderNo(int maintainerId);
     
     /**
-     * 功能描述:更新罚款信息 变为1
+     * 功能描述:更新罚款信息 变为2 
      * @param: 
      * @return: 
      * @auther: 治毅
      * @date:  
      */
-    @Update("update t_repair set fine=0 where id=#{id}")
+    @Update("update t_repair set fine=2 where id=#{id}")
     public int updRepair2Fine(int id);
+    
+    /**
+     * 功能描述:查看所有有关自己的罚款
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    public List<Repair> findMyFine(int roleId, int userId);
 }

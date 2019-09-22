@@ -183,6 +183,18 @@ public class StudentAndTeacherController {
             return JsonData.buildError("success", 0);
         }
     }
+    
+    /**
+     * 功能描述:查询自己所有的缴费
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    @GetMapping("findMyFine")
+    public JsonData findMyFine(HttpSession session){
+        return JsonData.buildSuccess(stuService.findMyFine(session));
+    }
 
     @PostMapping("do_repair")
     public JsonData doRepair(@RequestParam("name")String name,
@@ -217,11 +229,11 @@ public class StudentAndTeacherController {
                 File dir = null;
                 if (user.getRole() == 1){
                     dir = new File("G:/student/repair/" + user.getStudent().getStuNo());
-                    path = "G:/student/repair/" + user.getStudent().getStuNo();
+                    path += "G:/student/repair/" + user.getStudent().getStuNo();
                 }
                 if (user.getRole() == 2){
                     new File("G:/teacher/repair/" + user.getTeacher().getTeaNo());
-                    path = "G:/teacher/repair/" + user.getTeacher().getTeaNo();
+                    path += "G:/teacher/repair/" + user.getTeacher().getTeaNo();
                 }
                         
                 if (!dir.exists())
@@ -248,11 +260,11 @@ public class StudentAndTeacherController {
                 File dir = null;
                 if (user.getRole() == 1){
                     dir = new File("/usr/local/static/student/repair"  + user.getStudent().getStuNo());
-                    path = "/usr/local/static/student/repair"  + user.getStudent().getStuNo();
+                    path += "/usr/local/static/student/repair"  + user.getStudent().getStuNo();
                 }
                 if (user.getRole() == 2){
                     new File("/usr/local/static/student/repair"  + user.getTeacher().getTeaNo());
-                    path = "/usr/local/static/teacher/repair"  + user.getTeacher().getTeaNo();
+                    path += "/usr/local/static/teacher/repair"  + user.getTeacher().getTeaNo();
                 }
 
                 if (!dir.exists())

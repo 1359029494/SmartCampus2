@@ -113,14 +113,14 @@ public class UserServiceImpl implements UserService {
     public ResponseBean getValiCode(String phone) throws Exception {
         //========测试开始=======
 
-        String code="321";
-        redisUtils.set(phone,code , 60l);
-        return new ResponseBean();
+//        String code="321";
+//        redisUtils.set(phone,code , 60l);
+//        return new ResponseBean();
 
         //========测试结束=======
 
 
-        /*String code= GetCodeUtils.randomCode();
+        String code= GetCodeUtils.randomCode();
         StringBuilder sb = new StringBuilder();
         sb.append("accountSid").append("=").append(Config.accountId);
         sb.append("&to").append("=").append(phone);
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
             redisUtils.set(phone,code , 60l);
             responseBean.setCode(code);
         }
-        return responseBean;*/
+        return responseBean;
     }
 
     @Override
