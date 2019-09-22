@@ -109,4 +109,13 @@ public interface StudentAndTeacherService {
     public int updOrder2HasPay(int repairId);
 
     public void doRepair(Repair repair);
+    
+    /**
+     * 功能描述:查询自己所有的缴费
+     * @param: 
+     * @return: 
+     * @auther: 治毅
+     * @date:  
+     */
+    public List<Repair> findMyFine(HttpSession session);
 }

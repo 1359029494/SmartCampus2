@@ -294,4 +294,15 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
     public void doRepair(Repair repair) {
         repairMapper.insRepairSchool(repair);
     }
+
+    @Override
+    public List<Repair> findMyFine(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user.getRole() == 1){
+            return repairMapper.findMyFine(1, user.getStudent().getId());
+        }else {
+            return repairMapper.findMyFine(2, user.getTeacher().getId());
+        }
+        
+    }
 }

@@ -19,6 +19,7 @@
         <result column="fine" property="fine"></result>
         <result column="remarks" property="remarks"></result>
         <association property="maintainer" resultMap="MaintainerMap"></association>
+        <association property="order" resultMap="OrderMap"></association>
     </resultMap>
     <resultMap id="MaintainerMap" type="Maintainer">
         <id column="mid" property="id"></id>
@@ -27,9 +28,34 @@
         <result column="phone" property="phone"></result>
         <result column="mainNo" property="mainNo"></result>
     </resultMap>
+    <resultMap id="OrderMap" type="Order">
+        <id column="id" property="id"></id>
+        <result column="orderNo" property="orderNo"></result>
+        <result column="repairId" property="repairId"></result>
+        <result column="money" property="money"></result>
+        <result column="orderDate" property="oderDate"></result>
+        <result column="payDate" property="payDate"></result>
+        <result column="payState" property="payState"></result>
+    </resultMap>
 
     <select id="findMyRepair" resultMap="repairMap">
         select r.*,m.*,m.phone mphone from t_repair r LEFT JOIN t_receipt rt ON r.id=rt.repair_id LEFT JOIN t_maintainer m  ON rt.maintainer_id=m.id WHERE r.role=#{roleType} AND r.user_id=#{userId} order by repair_date desc
+    </select>
+    <select id="findMyFine" resultMap="repairMap">
+        SELECT
+            r.*, m.*, m.phone mphone,o.money
+        FROM
+            t_repair r
+        LEFT JOIN t_receipt rt ON r.id = rt.repair_id
+        LEFT JOIN t_maintainer m ON rt.maintainer_id = m.id
+        LEFT JOIN t_order o ON r.id = o.repair_id
+        WHERE
+            r.role = 1
+            AND r.user_id = 2
+            AND r.fine = 1
+            OR r.fine = 2
+            ORDER BY
+                repair_date DESC
     </select>
 <!--    <select id="findMyOrder" resultMap="repairMap">-->
 <!--        select * from t_repair t left join s_receipt s on t.id=s.id where s.maintainer_id=#{maintainer_id}-->
