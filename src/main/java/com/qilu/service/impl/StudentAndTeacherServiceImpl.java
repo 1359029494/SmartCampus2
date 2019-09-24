@@ -233,8 +233,8 @@ public class StudentAndTeacherServiceImpl implements StudentAndTeacherService {
                     }
                 }
             }else { //如果是Linux系统
-                String path = "/user/student/head_img";
-                String path2 = "/user/teacher/head_img";
+                String path = "/usr/student/head_img";
+                String path2 = "/usr/teacher/head_img";
                 dir = null;
                 if (user.getRole() == 1){
                     dir = new File(path + "/" + user.getStudent().getStuNo());

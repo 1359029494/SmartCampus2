@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/repair")
 public class RepairController {
     @Resource
@@ -61,7 +60,6 @@ public class RepairController {
         return pageInfo;
     }
     //查看所有单子
-    @CrossOrigin(origins = "*")
     @GetMapping("findOrder")
     public PageInfo<Repair> findOrder(@RequestParam(defaultValue = "1") int pageNum){
 
