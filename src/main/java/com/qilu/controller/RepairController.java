@@ -71,7 +71,7 @@ public class RepairController {
         return pageInfo;
     }
     //罚款 //新建罚款单
-    @PutMapping("fine")
+    @PostMapping("fine")
     public JsonData fine(int id,@Param("repairId")int repairId,@Param("money") BigDecimal money){
         repairService.fine(id);
         int r1=(int)(Math.random()*(10));//产生2个0-9的随机数
@@ -88,25 +88,25 @@ public class RepairController {
         return JsonData.buildSuccess("已发送罚款信息");
     }
     //完工
-    @PutMapping("finish")
+    @PostMapping("finish")
     public JsonData finish(int id){
         repairService.finish(id);
         return JsonData.buildSuccess("已完工");
     }
     //接单
-    @PutMapping("receipt")
+    @PostMapping("receipt")
     public JsonData receipt(int id,int maintainerId){
         repairService.receipt(id,maintainerId);
         return JsonData.buildSuccess("成功接单");
     }
     //查询数目
-    @PutMapping("getNumber")
+    @PostMapping("getNumber")
     public JsonData getNumber(int maintainerId){
         Map<String,Integer> map=repairService.getNumber(maintainerId);
         return JsonData.buildSuccess(map);
     }
     //查询评价
-    @PutMapping("check")
+    @PostMapping("check")
     public PageInfo<Evaluate> check(int maintainerId,@RequestParam(defaultValue = "1") int pageNum){
         PageHelper.startPage(pageNum, 2);
         List<Evaluate> list = repairService.check(maintainerId);
@@ -114,7 +114,7 @@ public class RepairController {
         return pageInfo;
     }
     //订单详细
-    @PutMapping("findOrderInfo")
+    @PostMapping("findOrderInfo")
     public JsonData findOrderInfo(int id){
         Repair repair=repairService.findOrderInfo(id);
         return JsonData.buildSuccess(repair);
