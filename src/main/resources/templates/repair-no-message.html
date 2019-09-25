@@ -55,16 +55,23 @@
 				table.render({
 					elem: '#test'
 					// 接口
-					,url:'/demo/table/user/'
+					,url:'admin/api/getAllRepair2'
+                    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                        layout: ['prev', 'page', 'next', 'skip'] //自定义分页布局
+                        ,curr: 1 //设定初始在第 5 页
+                        ,groups: 5 //只显示 1 个连续页码
+                        ,first: true //显示首页
+                        ,last: true //显示尾页
+
+                    }
 					,cols: [[
 							// 参数名              表格列名    是否安排排序
-						{field:'id', width:80, title: 'ID', sort: true}
-						,{field:'username', width:80, title: '报修人'}
-						,{field:'sex', minWidth:260, title: '故障内容' }
-						,{field:'city', width:120, title: '所在地'}
-						,{field:'sign', title: '报修时间', width: 180 , sort: true}
+						{field:'id', width:60, title: 'ID', sort: true}
+						,{field:'username', width:160, title: '报修人'}
+						,{field:'phone', minWidth:150, title: '故障内容' }
+						,{field:'local', width:120, title: '所在地'}
+						,{field:'repairDate', title: '报修时间', width: 180 , sort: true}
 					]]
-					,page: true
 				});
 			});
 		</script>

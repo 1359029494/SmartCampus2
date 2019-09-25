@@ -26,7 +26,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author 孙连辉
@@ -65,10 +68,40 @@ public class AdminController {
     @ApiOperation("获取所有的保修信息")
     @GetMapping("getAllRepair")
     public JsonData getAllRepair(@RequestParam(value = "pageSize",defaultValue = "1") Integer pageSize){
+        System.out.println("hou haode");
         Page<RepairResp> helps = PageHelper.startPage(pageSize, PageUtils.PAGE_SIZE);
         List<RepairResp> allRepair = adminService.getAllRepair();
         PageInfo<RepairResp> info =new PageInfo<>(allRepair);
         return JsonData.buildSuccess(info);
+    }
+
+    @ApiOperation("获取所有的yi保修信息")
+    @GetMapping("getAllRepair2")
+    public JsonData getAllRepair2(@RequestParam(value = "pageSize",defaultValue = "1") Integer pageSize){
+        List<RepairResp> allRepair = adminService.getAllRepair();
+        String[] str = {"灯管损坏","椅子损坏","玻璃破损","风扇坏了"};
+        for(int i=0;i<allRepair.size();i++){
+            Random r = new Random();
+            int in = r.nextInt(4);
+            RepairResp re = allRepair.get(i);
+            re.setPhone(str[in]);
+        }
+        return JsonData.buildSuccess(allRepair);
+    }
+
+    @ApiOperation("获取所有的wei保修信息")
+    @GetMapping("getAllRepair3")
+    public JsonData getAllRepair3(@RequestParam(value = "pageSize",defaultValue = "1") Integer pageSize){
+        List<RepairResp> allRepair = adminService.getAllRepair();
+        String[] str = {"灯管损坏","椅子损坏","玻璃破损","风扇坏了"};
+        for(int i=0;i<allRepair.size();i++){
+            Random r = new Random();
+            int in = r.nextInt(4);
+            RepairResp re = allRepair.get(i);
+            re.setPhone(str[in]);
+            re.setServiceStatus(5);
+        }
+        return JsonData.buildSuccess(allRepair);
     }
 
 
