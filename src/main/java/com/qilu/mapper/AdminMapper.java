@@ -2,6 +2,7 @@ package com.qilu.mapper;
 
 import com.qilu.po.Repair;
 import com.qilu.po.Student;
+import com.qilu.po.Teacher;
 import com.qilu.response.RepairResp;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface AdminMapper {
 
     //批量插入学生数据
     int insertStudent(List<Student> list);
+
+    int insertTeacher(List<Teacher> list);
 
     //查询所有保修
     List<RepairResp> getAllRepair();

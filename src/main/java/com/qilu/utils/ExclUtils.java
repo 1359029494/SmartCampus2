@@ -1,6 +1,7 @@
 package com.qilu.utils;
 
 import com.qilu.po.Student;
+import com.qilu.po.Teacher;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -15,10 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author 孙连辉
@@ -43,11 +41,13 @@ public class ExclUtils {
             return false;
     }
 
-    public static List<Student> getExcelData(MultipartFile file) throws IOException {
+    public static Map getExcelData(MultipartFile file) throws IOException {
+        Map<String,List> map=new HashMap<>();
         //获得Workbook工作薄对象
         Workbook workbook = getWorkBook(file);
         //创建返回对象，把每行中的值作为一个数组，所有行作为一个集合返回
-        List<Student> list = new ArrayList<>();
+        List<Student> studentList = new ArrayList<>();
+        List<Teacher> teacherList = new ArrayList<>();
         if(workbook != null){
             for(int sheetNum = 0;sheetNum < workbook.getNumberOfSheets();sheetNum++){
                 //获得当前sheet工作表
@@ -62,36 +62,68 @@ public class ExclUtils {
                 //循环除了第一行的所有行
                 for(int rowNum = firstRowNum+1;rowNum <= lastRowNum;rowNum++){
                     Student student=new Student();
+                    Teacher teacher=new Teacher();
                     //获得当前行
                     Row row = sheet.getRow(rowNum);
                     if(row == null){
                         continue;
                     }
-                    Cell cellName = row.getCell(0);
-                    String name = getCellValue(cellName);
-                    student.setName(name);
-                    Cell cellSex = row.getCell(1);
-                    String sexString = getCellValue(cellSex);
-                    if(StringUtils.equals(sexString,"男")){
-                        student.setSex(0);
-                    }else
-                        student.setSex(1);
-                    Cell cellPhone = row.getCell(2);
-                    String phone =getCellValue(cellPhone);
-                    student.setPhone(phone);
+                    Cell roleName = row.getCell(5);
+                    String role = getCellValue(roleName);
+                    if(StringUtils.equals("学生",role)){
+                        Cell cellName = row.getCell(0);
+                        String name = getCellValue(cellName);
+                        student.setName(name);
+                        Cell cellSex = row.getCell(1);
+                        String sexString = getCellValue(cellSex);
+                        if(StringUtils.equals(sexString,"男")){
+                            student.setSex(0);
+                        }else
+                            student.setSex(1);
+                        Cell cellPhone = row.getCell(2);
+                        String phone =getCellValue(cellPhone);
+                        student.setPhone(phone);
 
-                    Cell cellStuNo = row.getCell(3);
-                    String stuNo = getCellValue(cellStuNo);
-                    student.setStuNo(stuNo);
+                        Cell cellStuNo = row.getCell(3);
+                        String stuNo = getCellValue(cellStuNo);
+                        student.setStuNo(stuNo);
 
-                    Cell cellCollege = row.getCell(4);
-                    String college = getCellValue(cellCollege);
-                    student.setCollege(college);
-                    list.add(student);
+                        Cell cellCollege = row.getCell(4);
+                        String college = getCellValue(cellCollege);
+                        student.setCollege(college);
+                        studentList.add(student);
+                    }else{
+                        Cell cellName = row.getCell(0);
+                        String name = getCellValue(cellName);
+                        teacher.setName(name);
+                        Cell cellSex = row.getCell(1);
+                        String sexString = getCellValue(cellSex);
+                        if(StringUtils.equals(sexString,"男")){
+                            teacher.setSex(0);
+                        }else
+                            teacher.setSex(1);
+                        Cell cellPhone = row.getCell(2);
+                        String phone =getCellValue(cellPhone);
+                        teacher.setPhone(phone);
+
+                        Cell cellStuNo = row.getCell(3);
+                        String stuNo = getCellValue(cellStuNo);
+                        teacher.setTeaNo(stuNo);
+
+                        Cell cellCollege = row.getCell(4);
+                        String college = getCellValue(cellCollege);
+                        teacher.setCollege(college);
+                        teacherList.add(teacher);
+
+                    }
+                    map.put("学生",studentList);
+                    map.put("老师",teacherList);
+
+
                 }
             }
         }
-        return list;
+        return map;
     }
     public static  Workbook getWorkBook(MultipartFile file) {
         //获得文件名

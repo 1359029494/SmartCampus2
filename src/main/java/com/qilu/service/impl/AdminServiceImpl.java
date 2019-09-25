@@ -3,6 +3,7 @@ package com.qilu.service.impl;
 import com.qilu.exception.CustomException;
 import com.qilu.mapper.AdminMapper;
 import com.qilu.po.Student;
+import com.qilu.po.Teacher;
 import com.qilu.response.RepairResp;
 import com.qilu.service.AdminService;
 import com.qilu.utils.ExclUtils;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 孙连辉
@@ -48,10 +50,22 @@ public class AdminServiceImpl  implements AdminService {
             throw new CustomException(-1,"文件格式不正确");
         }
         log.info("excl名称:{}",file.getOriginalFilename());
-        List<Student> students = ExclUtils.getExcelData(file);
-            log.info("============开始录入学生信息===============");
-        int sum = adminMapper.insertStudent(students);
-        return sum;
+        Map map = ExclUtils.getExcelData(file);
+        List<Student> studentList =(List<Student>) map.get("学生");
+        List<Teacher> teacherList =(List<Teacher>) map.get("老师");
+        int studentCount=0;
+        int teacherCount=0;
+        if(studentList.size()>0){
+            log.info("============开始录入学生信   息===============");
+           studentCount = adminMapper.insertStudent(studentList);
+        }
+
+       if(teacherList.size()>0){
+           log.info("============开始录入老师信息===============");
+            teacherCount = adminMapper.insertTeacher(teacherList);
+       }
+
+        return studentCount+teacherCount;
     }
 
     @Override

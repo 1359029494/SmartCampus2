@@ -11,9 +11,9 @@ import java.util.List;
 @Configuration
 public class WebMvcHandler implements WebMvcConfigurer {
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
 //        List<String> addPatterns=new ArrayList<>();
 //        addPatterns.add("/admin/api/**");
 //        addPatterns.add("/*.html");
@@ -25,8 +25,16 @@ public class WebMvcHandler implements WebMvcConfigurer {
 //                excludePathPatterns(excludePatterns);
 //
 //        WebMvcConfigurer.super.addInterceptors(registry);
-//
-//    }
+
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/*/**").
+                addResourceLocations("classpath:/static/");
+        WebMvcConfigurer.super.addResourceHandlers(registry);
+    }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -39,4 +47,5 @@ public class WebMvcHandler implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("login");
     }
+
 }
